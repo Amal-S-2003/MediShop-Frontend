@@ -7,7 +7,7 @@ import { server_url } from "../services/server_url";
 import { CartContext } from "../Context/CartContext";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); 
   const [cartCount, setCartCount] = useState(0);
   const { userLoggedIn } = useContext(UserContext);
   const { cartItems } = useContext(CartContext);

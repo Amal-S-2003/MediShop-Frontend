@@ -7,7 +7,7 @@ export const ProdcutContextProdvider = (props) => {
   const fetchAllproducts = async () => {
     const result = await getAllProducts();    
     setAllProducts(result.data);
-  };
+  };  
   useEffect(() => {
     fetchAllproducts();
   }, []);

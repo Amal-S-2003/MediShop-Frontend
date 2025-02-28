@@ -16,7 +16,7 @@ export const addProductAPI = async (reqBody,reqHeader) => {
   export const getAllProducts=async()=>{
     return await commonAPI("GET",`${server_url}/get-all-products`,"","")
   }
-  // getAllProducts
+  //  
   export const getAllUsers=async()=>{
     return await commonAPI("GET",`${server_url}/get-all-users`,"","")
   }

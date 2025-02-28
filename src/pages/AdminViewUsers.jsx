@@ -6,7 +6,7 @@ function AdminViewUsers() {
   const fetchUsers = async () => {
     const result = await getAllUsers();
     if (result.status == 200) {
-      setAllUsers(result.data);
+      setAllUsers(result.data);    
       console.log(allUsers);
     }
   };

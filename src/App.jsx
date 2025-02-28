@@ -7,7 +7,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import Profile from "./pages/Profile";
-import CategoryProductPage from "./pages/CategoryProductPage";
+import CategoryProductPage from "./pages/CategoryProductPage";  
 import BrandProducts from "./pages/BrandProducts";
 import CartPage from "./pages/CartPage";
 import AboutPage from "./pages/AboutPage";

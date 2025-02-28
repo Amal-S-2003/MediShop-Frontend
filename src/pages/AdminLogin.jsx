@@ -14,12 +14,12 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     try {
       const response = await loginAPI({email,password})
       console.log(response);
       
-
+ 
       
       if (response.status==200) {
         

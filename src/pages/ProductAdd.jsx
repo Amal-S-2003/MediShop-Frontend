@@ -91,7 +91,7 @@ const ProductAdd = () => {
       }
       fetchAllproducts();
     } else {
-      toast.error(result.data.message);
+      toast.error(result.data.message); 
     }
   };
 
