@@ -12,6 +12,7 @@ function Navbar() {
   const { userLoggedIn } = useContext(UserContext);
   const { cartItems } = useContext(CartContext);
   useEffect(() => {
+    console.log(userLoggedIn);
     
     setCartCount(cartItems.length)
   }, [cartItems]);

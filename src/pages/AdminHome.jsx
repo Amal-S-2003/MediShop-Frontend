@@ -59,7 +59,7 @@ function AdminHome() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-5">
         <Outlet />
       </div>
     </div>
