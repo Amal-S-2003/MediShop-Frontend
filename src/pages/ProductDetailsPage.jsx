@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductDetails } from "../services/allAPIS";
+import { AddToCart, getProductDetails } from "../services/allAPIS";
 import { server_url } from "../services/server_url";
 
 const ProductDetailsPage = () => {
@@ -17,12 +17,34 @@ const ProductDetailsPage = () => {
     }
   };
 
+  const cartFunction = async () => {
+    console.log(product._id);
+    const id=product._id
+    const productData = new FormData();
+    productData.append("productId", id);
+    productData.append("name", product.name);
+    productData.append("price", product.price);
+    productData.append("quantity", 1);
+    productData.append("productImage", product.productImage); // Fixed this line
+
+    const token = sessionStorage.getItem("token");
+    if(token){
+    const reqHeader = {
+      authorization: `Bearer ${token}`,
+    };
+    const result = await AddToCart(product,reqHeader);
+    console.log("result", result.data);
+  }
+  };
+
   useEffect(() => {
     fetchProductDetails();
   }, [id]);
 
   if (!product) {
-    return <p className="text-center text-gray-600">Loading product details...</p>;
+    return (
+      <p className="text-center text-gray-600">Loading product details...</p>
+    );
   }
 
   return (
@@ -41,7 +63,9 @@ const ProductDetailsPage = () => {
         {/* Product Details */}
         <div className="w-full md:w-1/2 space-y-4">
           <h2 className="text-3xl font-bold">{product.name}</h2>
-          <p className="text-xl font-semibold text-gray-700">${product.price}</p>
+          <p className="text-xl font-semibold text-gray-700">
+            ${product.price}
+          </p>
           <p className="text-gray-600">
             <strong>Category:</strong> {product.category}
           </p>
@@ -80,7 +104,10 @@ const ProductDetailsPage = () => {
 
           {/* Buttons */}
           <div className="flex gap-4 mt-6">
-            <button className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+            <button
+              onClick={()=>cartFunction()}
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
               Add to Cart
             </button>
             <button className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">

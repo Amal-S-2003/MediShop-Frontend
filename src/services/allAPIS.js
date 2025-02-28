@@ -16,9 +16,39 @@ export const addProductAPI = async (reqBody,reqHeader) => {
   export const getAllProducts=async()=>{
     return await commonAPI("GET",`${server_url}/get-all-products`,"","")
   }
+  // getCategoryProducts
+  export const getCategoryProducts=async(category,reqHeader)=>{      
+    return await commonAPI("GET",`${server_url}/get-category-products/${category}`,"",reqHeader)
+  }
+  // getBrandProducts
+  export const getBrandProducts=async(brand,reqHeader)=>{      
+    return await commonAPI("GET",`${server_url}/get-brand-products/${brand}`,"",reqHeader)
+  }
 
   // getProductDetails
   export const getProductDetails=async(id)=>{
     return await commonAPI("GET",`${server_url}/get-product-details/${id}`,"","")
   }
+  // deleteAProduct
+  export const deleteAProduct=async(id,reqHeader)=>{
+    return await commonAPI("DELETE",`${server_url}/delete-product/${id}`,"",reqHeader)
+  }
+  // updateProduct
+  export const updateProduct=async(id,formData,reqHeader)=>{
+    return await commonAPI("PUT",`${server_url}/update-product/${id}`,formData,reqHeader)
+  }
 
+// Search Products API
+export const getSearchResults = async (query, reqHeader) => {
+  return await commonAPI("GET", `${server_url}/search?query=${query}`, "", reqHeader);
+};
+
+export const AddToCart = async (reqBody, reqHeader) => {
+  return await commonAPI("POST", `${server_url}/add-to-cart`, reqBody, reqHeader);
+};
+export const getCartItems = async ( reqHeader) => {
+  return await commonAPI("GET", `${server_url}/get-cartitems`, "", reqHeader);
+};
+export const removeCartItem = async ( productId,reqHeader) => {
+  return await commonAPI("DELETE", `${server_url}/remove-cartitem`, productId, reqHeader);
+};

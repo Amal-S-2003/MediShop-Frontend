@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import ProductListing from "../components/ProductListing";
 import { ProdcutContext } from "../Context/ProductContext";
 import Footer from "../components/Footer";
+import BrandsBanner from "../components/BrandsBanner";
 
 function Home() {
   const {allProducts, setAllProducts}=useContext(ProdcutContext)
@@ -71,23 +72,7 @@ function Home() {
         </div>
       </div>
       {/* Popular brands */}
-      <div className="text-center p-4 border-t-2 border-gray-100">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-2">
-          Popular Brands
-        </h2>
-        <p className="text-xl text-gray-600 mb-6">
-          Trusted by millions around the world
-        </p>
-        <div className="flex justify-between items-center space-x-8 mx-20 p-4 px-10 bg-gray-100">
-          <img src="brand-romsons.png" alt="Brand1" className="h-24" />
-          <img src="brand-polymed.png" alt="Brand1" className="h-24" />
-          <img src="brand-coloplast.png" alt="Brand1" className="h-24" />
-          <img src="brand-3m.png" alt="Brand1" className="h-24" />
-          <img src="brand-Dr-morepen.png" alt="Brand1" className="h-24" />
-          <img src="brand-adlisc.png" alt="Brand1" className="h-24" />
-        </div>
-      </div>
-
+  <BrandsBanner/>
 
       {/* Prodcuts Listing */}
       <ProductListing allProducts={allProducts}/>

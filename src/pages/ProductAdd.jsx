@@ -1,21 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { addProductAPI } from "../services/allAPIS";
 import { toast, ToastContainer } from "react-toastify";
+import { ProdcutContext } from "../Context/ProductContext";
 
 const ProductAdd = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [totalQuantity, setTotalQuantity] = useState("");
-  const [category, setCategory] = useState(""); 
+  const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
-  const [descriptions, setDescriptions] = useState([""]);   
+  const [descriptions, setDescriptions] = useState([""]);
   const [specifications, setSpecifications] = useState([
     { key: "", value: "" },
   ]);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null); // Reference for file input
-
+  const { fetchAllproducts } = useContext(ProdcutContext);
   const brands = [
     "Romsons",
     "Polymed",
@@ -88,6 +89,7 @@ const ProductAdd = () => {
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+      fetchAllproducts();
     } else {
       toast.error(result.data.message);
     }

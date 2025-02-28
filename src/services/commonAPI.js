@@ -1,8 +1,6 @@
 import axios from "axios";
 
-export const commonAPI = async (httpRequest, url, reqBody, reqHeader) => {  
-  console.log("common api",reqHeader);
-  
+export const commonAPI = async (httpRequest, url, reqBody, reqHeader) => {    
   const reqConfig = {
     method: httpRequest,
     url,

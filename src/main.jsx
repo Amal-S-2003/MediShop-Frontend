@@ -5,12 +5,15 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { ProdcutContextProdvider } from "./Context/ProductContext.jsx";
 import { UserContextProvider } from "./Context/UserContext.jsx";
+import { CartContextProvider } from "./Context/CartContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <ProdcutContextProdvider>
         <UserContextProvider>
-          <App />
+          <CartContextProvider>
+            <App />
+          </CartContextProvider>
         </UserContextProvider>
       </ProdcutContextProdvider>
     </BrowserRouter>
