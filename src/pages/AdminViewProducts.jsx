@@ -56,7 +56,11 @@ function AdminViewProducts() {
     const formData = new FormData();
 
     Object.keys(updatedProduct).forEach((key) => {
-      formData.append(key, updatedProduct[key]);
+      if (key == "descriptions" || key == "specifications") {
+        formData.append(key, JSON.stringify(updatedProduct[key]));
+      } else {
+        formData.append(key, updatedProduct[key]);
+      }
     });
 
     console.log("Updated Product Data:", updatedProduct); // Debugging
@@ -64,6 +68,7 @@ function AdminViewProducts() {
     try {
       const result = await updateProduct(
         updatedProduct._id,
+        // JSON.stringify(formData),
         formData,
         reqHeader
       );
@@ -87,7 +92,10 @@ function AdminViewProducts() {
 
     const newDescriptions = [...updatedProduct.descriptions];
     newDescriptions[index] = e.target.value;
-    setUpdatedProduct({ ...updatedProduct, descriptions: newDescriptions });
+    setUpdatedProduct({
+      ...updatedProduct,
+      descriptions: newDescriptions,
+    });
   };
 
   const addDescription = (e) => {
@@ -148,7 +156,8 @@ function AdminViewProducts() {
   };
 
   return (
-    <div className="  bg-white scroll-smooth max-h-[90vh] overflow-y-auto">
+    // <div className="  bg-white scroll-smooth max-h-[90vh] overflow-y-auto">
+    <div className="  bg-white ">
       <h2 className="text-2xl font-bold text-center text-green-700">
         All Products
       </h2>
@@ -214,8 +223,8 @@ function AdminViewProducts() {
 
       {/* Edit Modal */}
       {editProduct && (
-         <div className="fixed inset-0 bg-gray-300 bg-opacity-50 flex items-center justify-center p-4 overflow-y-auto">
-         <div className="max-w-4xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg max-h-[90vh] overflow-y-auto m-4">
+        <div className="fixed inset-0 bg-gray-300 bg-opacity-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="max-w-4xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg max-h-[90vh] overflow-y-auto m-4">
             <h2 className="text-2xl font-bold text-center mb-4">
               Edit Product
             </h2>

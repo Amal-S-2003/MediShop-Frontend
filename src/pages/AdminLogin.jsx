@@ -17,7 +17,7 @@ const AdminLogin = () => {
   
     try {
       const response = await loginAPI({email,password})
-      console.log(response);
+      console.log(response.data.existingUser);
       
  
       
@@ -25,8 +25,8 @@ const AdminLogin = () => {
         
         setIsAdminLogged(true);
         navigate("/admin");
-        localStorage.setItem('token',response.data.token)
-        localStorage.setItem('admin',response.data.existingUser)
+        sessionStorage.setItem('token',response.data.token)
+        sessionStorage.setItem('admin',response.data.existingUser.username)
       } else {
         setError(data.message || "Invalid credentials");
       }

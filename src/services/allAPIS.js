@@ -56,3 +56,45 @@ export const getCartItems = async ( reqHeader) => {
 export const removeCartItem = async ( productId,reqHeader) => {
   return await commonAPI("DELETE", `${server_url}/remove-cartitem`, productId, reqHeader);
 };
+
+// BRANDS
+
+export const addNewBrand = async ( reqBody,reqHeader) => {
+  return await commonAPI("POST", `${server_url}/add-brand`, reqBody, reqHeader);
+};
+export const viewBrands = async ( reqHeader) => {
+  return await commonAPI("GET", `${server_url}/all-brands`, "", reqHeader);
+};
+export const viewBrandDetails = async ( id,reqHeader) => {
+  return await commonAPI("GET", `${server_url}/brand-details/${id}`, "", reqHeader);
+};
+export const updateBrand = async ( id,reqBody,reqHeader) => {
+  return await commonAPI("PUT", `${server_url}/update-brand/${id}`, reqBody, reqHeader);
+};
+export const deleteBrand = async ( id,reqHeader) => {
+  return await commonAPI("DELETE", `${server_url}/delete-brand/${id}`, "", reqHeader);
+};
+
+
+
+// CATEGORIES
+
+export const addNewCategory = async (reqBody, reqHeader) => {
+  return await commonAPI("POST", `${server_url}/add-category`, reqBody, reqHeader);
+};
+
+export const viewCategories = async (reqHeader) => {
+  return await commonAPI("GET", `${server_url}/all-categories`, "", reqHeader);
+};
+
+export const viewCategoryDetails = async (id, reqHeader) => {
+  return await commonAPI("GET", `${server_url}/category-details/${id}`, "", reqHeader);
+};
+
+export const updateCategory = async (id, reqBody, reqHeader) => {
+  return await commonAPI("PUT", `${server_url}/update-category/${id}`, reqBody, reqHeader);
+};
+
+export const deleteCategory = async (id, reqHeader) => {
+  return await commonAPI("DELETE", `${server_url}/delete-category/${id}`, "", reqHeader);
+};

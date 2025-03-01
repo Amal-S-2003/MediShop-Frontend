@@ -96,6 +96,8 @@ const ProductAdd = () => {
   };
 
   return (
+    // <div className="  bg-white scroll-smooth max-h-[90vh] overflow-y-auto">
+    <div className="  ">
     <div className="max-w-3xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-4 text-center">Add New Product</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -258,6 +260,7 @@ const ProductAdd = () => {
         </div>
       </form>
       <ToastContainer />
+      </div>
     </div>
   );
 };

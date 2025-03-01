@@ -2,7 +2,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductAdd from "./pages/ProductAdd";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom"; // Import useLocation
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
@@ -14,7 +14,6 @@ import AboutPage from "./pages/AboutPage";
 import AdminHome from "./pages/AdminHome";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminViewProducts from "./pages/AdminViewProducts";
-import AdminAddProduct from "./pages/AdminAddProduct";
 import AdminViewOrders from "./pages/AdminViewOrders";
 import AdminViewUsers from "./pages/AdminViewUsers";
 import AdminViewCategories from "./pages/AdminViewCategories";
@@ -25,10 +24,16 @@ import AdminLogin from "./pages/AdminLogin";
 
 function App() {
   const { isAdminLogged } = useContext(UserContext);
+  const location = useLocation(); // Get current route
+
+  // Hide Navbar on specific routes
+  const hideNavbarRoutes = ["/login", "/admin","/register"];
+  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname) && !isAdminLogged;
 
   return (
     <>
-      {isAdminLogged ? "" : <Navbar />}
+      {shouldShowNavbar && <Navbar />} {/* Conditionally render Navbar */}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
