@@ -13,7 +13,7 @@ function ProductCard({product}) {
       className="w-full h-40 object-cover rounded-lg"
     />
     <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
-    <p className="text-gray-600">💰 Price: ${product.price}</p>
+    <p className="text-gray-600">💰 Price: ₹{product.price}</p>
     <p className="text-gray-500">🏭 Brand: {product.brand}</p>
   </div></div>
   )

@@ -1,94 +1,134 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { Card, CardContent } from "@/c";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Input } from "@/components/ui/input";
 import { toast } from "react-toastify";
+import { CartContext } from "../Context/CartContext";
+import { server_url } from "../services/server_url";
 
 const OrderPage = () => {
   const navigate = useNavigate();
-  
   const [selectedPayment, setSelectedPayment] = useState("credit_card");
   const [address, setAddress] = useState("123 Main Street, City, Country");
-  
+  const [savedAddress, setSavedAddress] = useState(address);
+  const { cartItems } = useContext(CartContext);
+
+  // Calculate order total
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const shippingFee = subtotal > 200 ? 0 : 10; // Free shipping for orders above $200
+  const orderTotal = subtotal + shippingFee;
+
   const handleOrder = () => {
     toast.success("Order placed successfully!");
     setTimeout(() => navigate("/ordersuccess"), 1500);
   };
 
+  const handleSaveAddress = () => {
+    setSavedAddress(address);
+    toast.success("Address saved!");
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h2 className="text-2xl font-bold">Order Summary</h2>
+    <div className="max-w-4xl mx-auto p-6 space-y-6 bg-gray-50 shadow-md rounded-lg">
+      <h2 className="text-3xl font-bold text-blue-700">Order Summary</h2>
 
       {/* Product Listing */}
-      <Card>
-        <CardContent className="p-4 space-y-4">
-          <h3 className="text-lg font-semibold">Your Items</h3>
-          <div className="flex justify-between items-center border-b pb-2">
-            <div className="flex items-center">
-              <img
-                src="/path/to/image.jpg"
-                alt="Product Name"
-                className="w-16 h-16 object-cover rounded-md mr-4"
-              />
-              <div>
-                <p className="font-medium text-gray-800">Product Name</p>
-                <p className="text-gray-500 text-sm">$50 x 2</p>
+      <div className="border rounded-lg p-4 shadow-sm bg-white">
+        <h3 className="text-lg font-semibold text-gray-700">Your Items</h3>
+        {cartItems.length > 0 ? (
+          cartItems.map((item, index) => (
+            <div key={index} className="flex justify-between items-center border-b pb-2 mt-2">
+              <div className="flex items-center">
+                <img
+                  src={`${server_url}/uploads/${item.productImage}`}
+                  alt={item.name}
+                  className="w-16 h-16 object-cover rounded-md mr-4"
+                />
+                <div>
+                  <p className="font-medium text-gray-800">{item.name}</p>
+                  <p className="text-gray-500 text-sm">₹{item.price} x {item.quantity}</p>
+                </div>
               </div>
+              <p className="font-semibold text-green-600">₹{item.price * item.quantity}</p>
             </div>
-            <p className="font-semibold">$100</p>
-          </div>
-        </CardContent>
-      </Card>
+          ))
+        ) : (
+          <h1 className="text-red-500">Cart is empty</h1>
+        )}
+      </div>
 
       {/* Address Section */}
-      <Card>
-        <CardContent className="p-4">
-          <h3 className="text-lg font-semibold mb-2">Delivery Address</h3>
-          <Input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="w-full border p-2 rounded"
-          />
-        </CardContent>
-      </Card>
+      <div className="border rounded-lg p-4 shadow-sm bg-white">
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">Delivery Address</h3>
+        <input
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          className="w-full p-2 border-b-2 border-blue-500 bg-transparent outline-none"
+          placeholder="Enter your address"
+        />
+        <button
+          onClick={handleSaveAddress}
+          className="mt-3 px-4 py-1 text-sm text-white bg-blue-600 hover:bg-blue-800 rounded transition"
+        >
+          Save Address
+        </button>
+      </div>
 
       {/* Payment Method */}
-      <Card>
-        <CardContent className="p-4">
-          <h3 className="text-lg font-semibold mb-2">Payment Method</h3>
-          <RadioGroup value={selectedPayment} onValueChange={setSelectedPayment}>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="credit_card" id="credit_card" />
-              <label htmlFor="credit_card">Credit Card</label>
-            </div>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="paypal" id="paypal" />
-              <label htmlFor="paypal">PayPal</label>
-            </div>
-          </RadioGroup>
-        </CardContent>
-      </Card>
+      <div className="border rounded-lg p-4 shadow-sm bg-white">
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">Payment Method</h3>
+        <div className="space-y-2">
+          {["credit_card", "paypal", "gpay", "cod"].map((method) => (
+            <label key={method} className="flex items-center gap-2 text-gray-600">
+              <input
+                type="radio"
+                value={method}
+                checked={selectedPayment === method}
+                onChange={(e) => setSelectedPayment(e.target.value)}
+                className="accent-blue-500"
+              />
+              {method === "credit_card" && "Credit Card"}
+              {method === "paypal" && "PayPal"}
+              {method === "gpay" && "Google Pay (GPay)"}
+              {method === "cod" && "Cash on Delivery (COD)"}
+            </label>
+          ))}
+        </div>
+      </div>
 
       {/* Order Summary */}
-      <Card>
-        <CardContent className="p-4 space-y-2">
-          <h3 className="text-lg font-semibold">Order Total</h3>
-          <p className="text-xl font-bold">$100</p>
-          <Button className="w-full bg-green-500 hover:bg-green-700" onClick={handleOrder}>
-            Place Order
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="border rounded-lg p-4 shadow-sm bg-white">
+        <h3 className="text-lg font-semibold text-gray-700">Order Details</h3>
+        <div className="flex justify-between text-gray-600">
+          <span>Subtotal:</span>
+          <span className="font-medium">₹{subtotal.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-gray-600">
+          <span>Shipping Fee:</span>
+          <span className={`font-medium ${shippingFee === 0 ? "text-green-500" : "text-red-500"}`}>
+            {shippingFee === 0 ? "Free" : `₹${shippingFee.toFixed(2)}`}
+          </span>
+        </div>
+        <div className="flex justify-between text-gray-800 text-xl font-bold">
+          <span>Total:</span>
+          <span className="text-green-600">₹{orderTotal.toFixed(2)}</span>
+        </div>
+        <p className="text-sm text-gray-500 mt-1">Estimated delivery: 3-5 business days</p>
+        <button
+          className="w-full bg-green-500 hover:bg-green-700 text-white py-2 rounded mt-2 transition"
+          onClick={handleOrder}
+        >
+          Place Order
+        </button>
+      </div>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-4">
-        <Button variant="outline" onClick={() => navigate("/cart")}>
+        <button
+          className="border px-4 py-2 rounded text-gray-700 hover:bg-gray-200 transition"
+          onClick={() => navigate("/cart")}
+        >
           Back to Cart
-        </Button>
+        </button>
       </div>
     </div>
   );

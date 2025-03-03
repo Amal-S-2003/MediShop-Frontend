@@ -68,6 +68,7 @@ function CartPage() {
         };
         const result = await updateCartItem(productId._id, reqbody, reqHeader);
         fetchCart();
+        fetchCartItems()
       }
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -115,7 +116,7 @@ if(token){
                 />
                 <div>
                   <p className="font-medium text-gray-800">{item.name}</p>
-                  <p className="text-gray-500 text-sm">${item.price}</p>
+                  <p className="text-gray-500 text-sm">₹{item.price}</p>
                   <div className="flex items-center mt-2">
                     <button
                       className="px-2 py-1 bg-gray-300 rounded-l"
@@ -149,7 +150,7 @@ if(token){
           ))}
           <div className="mt-4 flex justify-between items-center">
             <p className="text-lg font-semibold">
-              Total: ${cart.totalPrice.toFixed(2)}
+              Total: ₹{cart.totalPrice.toFixed(2)}
             </p>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"

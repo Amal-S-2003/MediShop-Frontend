@@ -70,7 +70,7 @@ console.log(productData,"prodcutData in fe");
         <div className="w-full md:w-1/2 space-y-4">
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <p className="text-xl font-semibold text-gray-700">
-            ${product.price}
+          ₹{product.price}
           </p>
           <p className="text-gray-600">
             <strong>Category:</strong> {product.category}
