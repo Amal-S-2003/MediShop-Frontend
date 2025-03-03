@@ -29,6 +29,11 @@ export const addProductAPI = async (reqBody,reqHeader) => {
     return await commonAPI("GET",`${server_url}/get-brand-products/${brand}`,"",reqHeader)
   }
 
+  // getUser
+  export const getUser=async(reqHeader)=>{
+    return await commonAPI("GET",`${server_url}/get-user-details`,"",reqHeader)
+  }
+
   // getProductDetails
   export const getProductDetails=async(id)=>{
     return await commonAPI("GET",`${server_url}/get-product-details/${id}`,"","")
@@ -47,15 +52,7 @@ export const getSearchResults = async (query, reqHeader) => {
   return await commonAPI("GET", `${server_url}/search?query=${query}`, "", reqHeader);
 };
 
-export const AddToCart = async (reqBody, reqHeader) => {
-  return await commonAPI("POST", `${server_url}/add-to-cart`, reqBody, reqHeader);
-};
-export const getCartItems = async ( reqHeader) => {
-  return await commonAPI("GET", `${server_url}/get-cartitems`, "", reqHeader);
-};
-export const removeCartItem = async ( productId,reqHeader) => {
-  return await commonAPI("DELETE", `${server_url}/remove-cartitem`, productId, reqHeader);
-};
+
 
 // BRANDS
 
@@ -97,4 +94,28 @@ export const updateCategory = async (id, reqBody, reqHeader) => {
 
 export const deleteCategory = async (id, reqHeader) => {
   return await commonAPI("DELETE", `${server_url}/delete-category/${id}`, "", reqHeader);
+};
+
+
+// CART
+
+
+export const getCartItems = async (reqHeader) => {
+  return await commonAPI("GET", `${server_url}/get-cart`, "", reqHeader);
+};
+
+export const addToCart = async (productData, reqHeader) => {  
+  return await commonAPI("POST", `${server_url}/add-to-cart`, productData, reqHeader);
+};
+
+export const updateCartItem = async (productId,reqbody, reqHeader) => {  
+  return await commonAPI("PUT", `${server_url}/update-cart/${productId}`, reqbody, reqHeader);
+};
+
+export const removeCartItem = async (productId, reqHeader) => {
+  return await commonAPI("DELETE", `${server_url}/remove-cartitem`, productId, reqHeader);
+};
+
+export const clearCart = async (cartId,reqHeader) => {
+  return await commonAPI("DELETE", `${server_url}/clear-cart/${cartId}`, "", reqHeader);
 };

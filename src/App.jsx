@@ -21,6 +21,7 @@ import AdminViewBrands from "./pages/AdminViewBrands";
 import { UserContext } from "./Context/UserContext";
 import { useContext } from "react";
 import AdminLogin from "./pages/AdminLogin";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
   const { isAdminLogged } = useContext(UserContext);
@@ -40,6 +41,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/orders" element={<OrderPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/category/:c" element={<CategoryProductPage />} />
         <Route path="/brands/:b" element={<BrandProducts />} />

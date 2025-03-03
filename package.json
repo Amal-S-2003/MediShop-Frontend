@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@shadcn/ui": "^0.0.4",
     "@tailwindcss/vite": "^4.0.6",
     "axios": "^1.7.9",
+    "components": "^0.1.0",
     "heroicons": "^2.2.0",
     "lucide-react": "^0.476.0",
     "react": "^19.0.0",

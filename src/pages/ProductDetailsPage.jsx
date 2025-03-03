@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AddToCart, getProductDetails } from "../services/allAPIS";
+import { addToCart, getProductDetails } from "../services/allAPIS";
 import { server_url } from "../services/server_url";
+import { toast, ToastContainer } from "react-toastify";
+import { CartContext } from "../Context/CartContext";
 
 const ProductDetailsPage = () => {
   const [product, setProduct] = useState();
   const { id } = useParams();
+  const userId = sessionStorage.getItem("existing_User_Id");
 
+const{fetchCartItems}=useContext(CartContext)
   const fetchProductDetails = async () => {
     try {
       const productDetails = await getProductDetails(id);
@@ -18,21 +22,23 @@ const ProductDetailsPage = () => {
   };
 
   const cartFunction = async () => {
-    console.log(product._id);
     const id=product._id
-    const productData = new FormData();
-    productData.append("productId", id);
-    productData.append("name", product.name);
-    productData.append("price", product.price);
-    productData.append("quantity", 1);
-    productData.append("productImage", product.productImage); // Fixed this line
+    const productData = {
+      productId: id,
+      quantity: 1,
+    };
+console.log(productData,"prodcutData in fe");
 
     const token = sessionStorage.getItem("token");
     if(token){
     const reqHeader = {
       authorization: `Bearer ${token}`,
     };
-    const result = await AddToCart(product,reqHeader);
+    const result = await addToCart(productData,reqHeader);
+    if(result.status==200){
+      toast.success("Product added to cart")
+      fetchCartItems()
+    }else{toast.warn("Product add to cart is failed!")}
     console.log("result", result.data);
   }
   };
@@ -116,6 +122,7 @@ const ProductDetailsPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-center"/>
     </div>
   );
 };

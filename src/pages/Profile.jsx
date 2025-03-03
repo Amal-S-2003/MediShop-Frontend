@@ -5,9 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Profile() {
   const { loggedUser } = useContext(UserContext);
   const navigate=useNavigate()
-  useEffect(() => {
-    console.log("inkur",loggedUser);
-    
+  useEffect(() => {    
       console.log("loggedUser", loggedUser);
   }, []);
   return <div>  <div className="flex justify-center items-center min-h-screen bg-gray-100">

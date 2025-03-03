@@ -1,77 +1,105 @@
-import React, { useEffect, useState, useContext } from "react";
-// import {  removeFromCart, clearCart } from "../services/cartAPI";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  clearCart,
+  getCartItems,
+  removeCartItem,
+  updateCartItem,
+} from "../services/allAPIS";
 import { server_url } from "../services/server_url";
-import { Link } from "react-router-dom";
-import { getCartItems, removeCartItem } from "../services/allAPIS";
 import { toast, ToastContainer } from "react-toastify";
+import { CartContext } from "../Context/CartContext";
 
 function CartPage() {
   const [cart, setCart] = useState({ products: [], totalPrice: 0 });
-  const [loading, setLoading] = useState(true);
-
+  // const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { fetchCartItems } = useContext(CartContext);
   useEffect(() => {
-    console.log("in cart");
     fetchCart();
   }, []);
 
   const fetchCart = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const token = sessionStorage.getItem("token");
       if (token) {
-        const reqHeader = {
-          authorization: `Bearer ${token}`,
-        };
+        const reqHeader = { authorization: `Bearer ${token}` };
         const response = await getCartItems(reqHeader);
-        console.log(response.data);
-
         setCart(response.data || { products: [], totalPrice: 0 });
       }
     } catch (error) {
       console.error("Error fetching cart:", error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
   const handleRemove = async (productId) => {
+    console.log(productId._id);
+
     try {
       const token = sessionStorage.getItem("token");
       if (token) {
-        const reqHeader = {
-          authorization: `Bearer ${token}`,
+        const reqHeader = { authorization: `Bearer ${token}` };
+        const reqBody = {
+          productId: productId._id,
         };
-        const result = await removeCartItem(productId,reqHeader);
-        console.log(result);
-
-        if (result.status == 200) {
+        const result = await removeCartItem(reqBody, reqHeader);
+        if (result.status === 200) {
           toast.success("Item removed from cart");
-        } else {
-          toast.warn("Item not removed from cart");
+          fetchCart();
+          fetchCartItems();
         }
-        fetchCart();
       }
     } catch (error) {
       console.error("Error removing item:", error);
     }
   };
 
-  const handleClearCart = async () => {
+  const handleUpdateQuantity = async (productId, quantity) => {
+    if (quantity < 1) return;
     try {
-      await clearCart();
-      setCart({ products: [], totalPrice: 0 });
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        const reqHeader = { authorization: `Bearer ${token}` };
+        const reqbody = {
+          quantity: quantity,
+        };
+        const result = await updateCartItem(productId._id, reqbody, reqHeader);
+        fetchCart();
+      }
     } catch (error) {
-      console.error("Error clearing cart:", error);
+      console.error("Error updating quantity:", error);
     }
+  };
+
+  const handleClearCart = async () => {
+    const token = sessionStorage.getItem("token");
+if(token){
+    const reqHeader = { authorization: `Bearer ${token}` };
+    const cartId = cart._id;
+    console.log(cartId);
+    
+    const result = await clearCart(cartId, reqHeader);
+    if (result.status == 200) {
+      fetchCart()
+      fetchCartItems();
+      toast.success("Cart cleared");
+    } else {
+      toast.warn("Cart clearing failed!");
+    }}
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
-      {loading ? (
-        <p>Loading cart...</p>
-      ) : cart.products.length === 0 ? (
-        <p>Your cart is empty.</p>
+      <h2 className="text-3xl font-bold mb-4 text-center">Shopping Cart</h2>
+      {
+      // loading ? (
+      //   <p className="text-center">Loading cart...</p>
+      // ) :
+       cart.products.length === 0 ? (
+        <p className="text-center text-gray-500">Your cart is empty.</p>
       ) : (
         <>
           {cart.products.map((item) => (
@@ -87,9 +115,28 @@ function CartPage() {
                 />
                 <div>
                   <p className="font-medium text-gray-800">{item.name}</p>
-                  <p className="text-gray-500 text-sm">
-                    ${item.price} x {item.quantity}
-                  </p>
+                  <p className="text-gray-500 text-sm">${item.price}</p>
+                  <div className="flex items-center mt-2">
+                    <button
+                      className="px-2 py-1 bg-gray-300 rounded-l"
+                      onClick={() =>
+                        handleUpdateQuantity(item.productId, item.quantity - 1)
+                      }
+                    >
+                      -
+                    </button>
+                    <span className="px-4 py-1 bg-white border">
+                      {item.quantity}
+                    </span>
+                    <button
+                      className="px-2 py-1 bg-gray-300 rounded-r"
+                      onClick={() =>
+                        handleUpdateQuantity(item.productId, item.quantity + 1)
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
               <button
@@ -106,17 +153,25 @@ function CartPage() {
             </p>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-              onClick={() => handleClearCart()}
+              onClick={handleClearCart}
             >
               Clear Cart
             </button>
           </div>
-          <Link
-            to="/checkout"
-            className="block text-center bg-green-500 text-white px-6 py-3 rounded mt-4 hover:bg-green-700"
-          >
-            Proceed to Checkout
-          </Link>
+          <div className="mt-6 flex justify-between">
+            <button
+              onClick={() => navigate("/orderpage")}
+              className="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-700 w-1/2 mr-2"
+            >
+              Proceed to Checkout
+            </button>
+            <Link
+              to="/"
+              className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-700 w-1/2 text-center"
+            >
+              Add More
+            </Link>
+          </div>
         </>
       )}
       <ToastContainer />
