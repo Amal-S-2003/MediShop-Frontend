@@ -119,3 +119,16 @@ export const removeCartItem = async (productId, reqHeader) => {
 export const clearCart = async (cartId,reqHeader) => {
   return await commonAPI("DELETE", `${server_url}/clear-cart/${cartId}`, "", reqHeader);
 };
+
+
+// ORDERS
+// placeOrder
+export const placeOrder=async(orderDetails,reqHeader)=>{
+  return await commonAPI("POST", `${server_url}/place-order`, orderDetails, reqHeader);
+}
+
+export const getAllOrders = async (reqHeader) => {
+  console.log("get all orders");
+  
+  return await commonAPI("GET", `${server_url}/get-user-orders`, "", reqHeader);
+};

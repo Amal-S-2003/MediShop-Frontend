@@ -22,6 +22,8 @@ import { UserContext } from "./Context/UserContext";
 import { useContext } from "react";
 import AdminLogin from "./pages/AdminLogin";
 import OrderPage from "./pages/OrderPage";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
+import ViewOrdersPage from "./pages/ViewOrdersPage";
 
 function App() {
   const { isAdminLogged } = useContext(UserContext);
@@ -42,10 +44,12 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/orderpage" element={<OrderPage />} />
+        <Route path="/orders" element={<ViewOrdersPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/category/:c" element={<CategoryProductPage />} />
         <Route path="/brands/:b" element={<BrandProducts />} />
         <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+        <Route path="/order-success" element={<OrderSuccessPage />} />
 
         <Route
           path="/admin"

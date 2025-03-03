@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CartContext } from "../Context/CartContext";
 import { server_url } from "../services/server_url";
+import { placeOrder } from "../services/allAPIS";
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -16,10 +17,40 @@ const OrderPage = () => {
   const shippingFee = subtotal > 200 ? 0 : 10; // Free shipping for orders above $200
   const orderTotal = subtotal + shippingFee;
 
-  const handleOrder = () => {
-    toast.success("Order placed successfully!");
-    setTimeout(() => navigate("/ordersuccess"), 1500);
+  const handleOrder =async () => {
+    const orderDetails = {
+      products: cartItems.map((item) => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        total: item.price * item.quantity,
+        image: `${server_url}/uploads/${item.productImage}`,
+      })),
+      address: savedAddress,
+      paymentMethod: selectedPayment,
+      subtotal: subtotal.toFixed(2),
+      shippingFee: shippingFee.toFixed(2),
+      totalPrice: orderTotal.toFixed(2),
+      estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toDateString(),
+    };
+  
+    console.log("Order Details:", orderDetails);
+    const token = sessionStorage.getItem("token");
+
+    if (token) {
+               const reqHeader = { authorization: `Bearer ${token}` };
+               const response = await placeOrder(orderDetails,reqHeader);
+              if (response.status==201) {
+                
+                toast.success("Order placed successfully!");
+              
+                setTimeout(() => navigate("/order-success"), 1500);
+              } else {
+                toast.warn("Order failed")
+              }
+             }
   };
+  
 
   const handleSaveAddress = () => {
     setSavedAddress(address);
