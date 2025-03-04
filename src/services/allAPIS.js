@@ -127,8 +127,16 @@ export const placeOrder=async(orderDetails,reqHeader)=>{
   return await commonAPI("POST", `${server_url}/place-order`, orderDetails, reqHeader);
 }
 
+export const changeStatus=async(reqBody,reqHeader)=>{
+  return await commonAPI("POST", `${server_url}/change-status`, reqBody, reqHeader);
+}
+
 export const getAllOrders = async (reqHeader) => {
   console.log("get all orders");
   
   return await commonAPI("GET", `${server_url}/get-user-orders`, "", reqHeader);
+};
+export const getOrders = async (reqHeader) => {
+  console.log("get all orders");
+  return await commonAPI("GET", `${server_url}/get-all-orders`, "", reqHeader);
 };

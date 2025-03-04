@@ -6,13 +6,16 @@ import { BrowserRouter } from "react-router-dom";
 import { ProdcutContextProdvider } from "./Context/ProductContext.jsx";
 import { UserContextProvider } from "./Context/UserContext.jsx";
 import { CartContextProvider } from "./Context/CartContext.jsx";
+import { OrderContextProvider } from "./Context/OrderContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <ProdcutContextProdvider>
         <UserContextProvider>
           <CartContextProvider>
-            <App />
+            <OrderContextProvider>
+              <App />
+            </OrderContextProvider>
           </CartContextProvider>
         </UserContextProvider>
       </ProdcutContextProdvider>
