@@ -41,6 +41,8 @@ const Register = () => {
 
     if (validateForm()) {
       const result = await registerAPI(formData);
+      console.log(result);
+      
       if (result.status == 200) {
         toast.success("User registered successfully");
         navigate("/login");

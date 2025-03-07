@@ -1,8 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import { getAllProducts } from "../services/allAPIS";
 
-export const ProdcutContext = createContext();
-export const ProdcutContextProdvider = (props) => {
+export const ProductContext = createContext();
+export const ProductContextProdvider = (props) => {
   const [allProducts, setAllProducts] = useState([]);
   const fetchAllproducts = async () => {
     const result = await getAllProducts();    
@@ -13,8 +13,8 @@ export const ProdcutContextProdvider = (props) => {
   }, []);
   const value = { allProducts, setAllProducts,fetchAllproducts };
   return (
-    <ProdcutContext.Provider value={value}>
+    <ProductContext.Provider value={value}>
       {props.children}
-    </ProdcutContext.Provider>
+    </ProductContext.Provider>
   );
 };

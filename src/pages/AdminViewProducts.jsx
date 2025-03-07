@@ -1,16 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import { ProductContext } from "../Context/ProductContext";
 import { server_url } from "../services/server_url";
-import { deleteAProduct, updateProduct } from "../services/allAPIS";
+import {
+  deleteAProduct,
+  updateProduct,
+  viewBrands,
+  viewCategories,
+} from "../services/allAPIS";
 import { toast, ToastContainer } from "react-toastify";
-import { ProdcutContext } from "../Context/ProductContext";
+import { ProductContext } from "../Context/ProductContext";
 
 function AdminViewProducts() {
-  const { allProducts, fetchAllproducts } = useContext(ProdcutContext);
+  const { allProducts, fetchAllproducts } = useContext(ProductContext);
 
   const [editProduct, setEditProduct] = useState(null);
   const [updatedProduct, setUpdatedProduct] = useState({});
   const [imagePreview, setImagePreview] = useState("");
+
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   // Handle Input Change
   const handleChange = (e) => {
@@ -155,6 +163,41 @@ function AdminViewProducts() {
     }
   };
 
+  const fetchCategories = async (reqHeader) => {
+    try {
+      const response = await viewCategories(reqHeader);
+      if (response.status === 200) {
+        // console.log(response.data);
+        setCategories(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+  const fetchBrands = async (reqHeader) => {
+    try {
+      const response = await viewBrands(reqHeader);
+      if (response.status === 200) {
+        setBrands(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      toast.error("Unauthorized: Please log in.");
+      return;
+    }
+
+    const reqHeader = { authorization: `Bearer ${token}` };
+    fetchCategories(reqHeader);
+    fetchBrands(reqHeader);
+    console.log("brands,categories", brands, categories);
+  }, []);
+
   return (
     // <div className="  bg-white scroll-smooth max-h-[90vh] overflow-y-auto">
     <div className="  bg-white ">
@@ -273,27 +316,43 @@ function AdminViewProducts() {
                   <label className="block text-gray-700 font-medium">
                     Category
                   </label>
-                  <input
-                    type="text"
-                    name="category"
+                  <select
+                  name='category'
                     value={updatedProduct.category}
                     onChange={(e) => handleChange(e)}
-                    className="w-full p-2 border rounded-md"
                     required
-                  />
+                    className="w-full p-2 border rounded-md"
+                  >
+                    <option value={updatedProduct.category}>
+                      {updatedProduct.category}
+                    </option>
+                    {categories.map((cat, index) => (
+                      <option key={index} value={cat.categoryName}>
+                        {cat.categoryName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium">
                     Brand
                   </label>
-                  <input
-                    type="text"
-                    name="brand"
+
+                  <select
                     value={updatedProduct.brand}
-                    onChange={(e) => handleChange(e)}
-                    className="w-full p-2 border rounded-md"
+                    onChange={(e) => handleChange(e.target.value)}
                     required
-                  />
+                    className="w-full p-2 border rounded-md"
+                  >
+                    <option value={updatedProduct.brand}>
+                      {updatedProduct.brand}
+                    </option>
+                    {brands.map((br, index) => (
+                      <option key={index} value={br.brandName}>
+                        {br.brandName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="space-y-4">

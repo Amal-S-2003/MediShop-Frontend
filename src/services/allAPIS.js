@@ -7,6 +7,9 @@ export const loginAPI=async(reqBody)=>{
 export const registerAPI=async(reqBody)=>{
   return await commonAPI("POST", `${server_url}/register`, reqBody, "");
 }
+export const editProfile=async(editUser,reqHeader)=>{
+  return await commonAPI("PUT", `${server_url}/edit-profile`, editUser, reqHeader);
+}
 
 export const addProductAPI = async (reqBody,reqHeader) => {   
     return await commonAPI("POST", `${server_url}/add-product`, reqBody, reqHeader);
@@ -48,8 +51,10 @@ export const addProductAPI = async (reqBody,reqHeader) => {
   }
 
 // Search Products API
-export const getSearchResults = async (query, reqHeader) => {
-  return await commonAPI("GET", `${server_url}/search?query=${query}`, "", reqHeader);
+export const getSearchResults = async (query) => {
+  console.log(query,"query");
+  
+  return await commonAPI("GET", `${server_url}/search?query=${query}`, "", "");
 };
 
 
@@ -129,6 +134,9 @@ export const placeOrder=async(orderDetails,reqHeader)=>{
 
 export const changeStatus=async(reqBody,reqHeader)=>{
   return await commonAPI("POST", `${server_url}/change-status`, reqBody, reqHeader);
+}
+export const cancelOrder=async(reqBody,reqHeader)=>{
+  return await commonAPI("PUT", `${server_url}/change-status`, reqBody, reqHeader);
 }
 
 export const getAllOrders = async (reqHeader) => {

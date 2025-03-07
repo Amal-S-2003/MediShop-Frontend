@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import ProductListing from "../components/ProductListing";
-import { ProdcutContext } from "../Context/ProductContext";
+import { ProductContext } from "../Context/ProductContext";
 import Footer from "../components/Footer";
 import BrandsBanner from "../components/BrandsBanner";
 
 function Home() {
-  const {allProducts, setAllProducts}=useContext(ProdcutContext)
+  const {allProducts, setAllProducts}=useContext(ProductContext)
   useEffect(() => {
     
   console.log(allProducts);
