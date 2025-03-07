@@ -136,15 +136,27 @@ export const changeStatus=async(reqBody,reqHeader)=>{
   return await commonAPI("POST", `${server_url}/change-status`, reqBody, reqHeader);
 }
 export const cancelOrder=async(reqBody,reqHeader)=>{
-  return await commonAPI("PUT", `${server_url}/change-status`, reqBody, reqHeader);
+  return await commonAPI("PUT", `${server_url}/cancel-order`, reqBody, reqHeader);
 }
 
-export const getAllOrders = async (reqHeader) => {
-  console.log("get all orders");
-  
+export const getAllOrders = async (reqHeader) => {  
   return await commonAPI("GET", `${server_url}/get-user-orders`, "", reqHeader);
 };
 export const getOrders = async (reqHeader) => {
-  console.log("get all orders");
   return await commonAPI("GET", `${server_url}/get-all-orders`, "", reqHeader);
+};
+
+
+export const getProductReviews = async (productId, reqHeader) => {
+  return await commonAPI("GET", `${server_url}/get-reviews/${productId}`, "", reqHeader);
+};
+
+// Get the average rating for a product
+export const getAverageRating = async (productId, reqHeader) => {
+  return await commonAPI("GET", `${server_url}/get-average-rating/${productId}`, "", reqHeader);
+};
+
+// Add a new review
+export const addReview = async (reviewData, reqHeader) => {
+  return await commonAPI("POST", `${server_url}/add-review`, reviewData, reqHeader);
 };

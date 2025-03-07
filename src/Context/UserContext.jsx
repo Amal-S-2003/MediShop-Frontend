@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getUser } from "../services/allAPIS";
+import { getAllUsers, getUser } from "../services/allAPIS";
 
 export const UserContext = createContext();
 
@@ -7,6 +7,19 @@ export const UserContextProvider = (props) => {
   const [loggedUser, setLoggedUser] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isAdminLogged, setIsAdminLogged] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const result = await getAllUsers();
+      if (result.status === 200) {
+        setAllUsers(result.data);
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
   // const admin=sessionStorage.getItem("admin")
   const fetchUserDeatails = async () => {
     console.log("in function");
@@ -28,6 +41,7 @@ export const UserContextProvider = (props) => {
       fetchUserDeatails();
       setUserLoggedIn(true);
     }
+    fetchUsers();
   }, []);
 
   const value = {
@@ -37,6 +51,9 @@ export const UserContextProvider = (props) => {
     setUserLoggedIn,
     isAdminLogged,
     setIsAdminLogged,
+    allUsers,
+    setAllUsers,
+    fetchUsers,
     fetchUserDeatails,
   };
   return (

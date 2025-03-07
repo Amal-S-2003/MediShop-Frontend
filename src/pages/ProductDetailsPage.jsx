@@ -4,12 +4,14 @@ import { addToCart, getProductDetails } from "../services/allAPIS";
 import { server_url } from "../services/server_url";
 import { toast, ToastContainer } from "react-toastify";
 import { CartContext } from "../Context/CartContext";
+import ProductReviews from "../components/ProductReviews";
+import { UserContext } from "../Context/UserContext";
 
 const ProductDetailsPage = () => {
   const [product, setProduct] = useState();
   const { id } = useParams();
   const userId = sessionStorage.getItem("existing_User_Id");
-
+const {loggedUser}=useContext(UserContext)
 const{fetchCartItems}=useContext(CartContext)
   const fetchProductDetails = async () => {
     try {
@@ -122,6 +124,7 @@ console.log(productData,"prodcutData in fe");
           </div>
         </div>
       </div>
+      <ProductReviews productId={product._id} user={ loggedUser}/>
       <ToastContainer position="top-center"/>
     </div>
   );

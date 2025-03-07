@@ -4,20 +4,24 @@ import { toast } from "react-toastify";
 import { CartContext } from "../Context/CartContext";
 import { server_url } from "../services/server_url";
 import { placeOrder } from "../services/allAPIS";
+import { OrderContext } from "../Context/OrderContext";
 
 const OrderPage = () => {
   const navigate = useNavigate();
   const [selectedPayment, setSelectedPayment] = useState("credit_card");
   const [address, setAddress] = useState("123 Main Street, City, Country");
   const [savedAddress, setSavedAddress] = useState(address);
-  const { cartItems } = useContext(CartContext);
-
+  const { cartItems, fetchCartItems } = useContext(CartContext);
+  const { fetchUserOrders } = useContext(OrderContext);
   // Calculate order total
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
   const shippingFee = subtotal > 200 ? 0 : 10; // Free shipping for orders above $200
   const orderTotal = subtotal + shippingFee;
 
-  const handleOrder =async () => {
+  const handleOrder = async () => {
     const orderDetails = {
       products: cartItems.map((item) => ({
         name: item.name,
@@ -31,26 +35,27 @@ const OrderPage = () => {
       subtotal: subtotal.toFixed(2),
       shippingFee: shippingFee.toFixed(2),
       totalPrice: orderTotal.toFixed(2),
-      estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toDateString(),
+      estimatedDelivery: new Date(
+        Date.now() + 3 * 24 * 60 * 60 * 1000
+      ).toDateString(),
     };
-  
+
     console.log("Order Details:", orderDetails);
     const token = sessionStorage.getItem("token");
 
     if (token) {
-               const reqHeader = { authorization: `Bearer ${token}` };
-               const response = await placeOrder(orderDetails,reqHeader);
-              if (response.status==201) {
-                
-                toast.success("Order placed successfully!");
-              
-                setTimeout(() => navigate("/order-success"), 1500);
-              } else {
-                toast.warn("Order failed")
-              }
-             }
+      const reqHeader = { authorization: `Bearer ${token}` };
+      const response = await placeOrder(orderDetails, reqHeader);
+      if (response.status == 201) {
+        toast.success("Order placed successfully!");
+        fetchCartItems();
+        fetchUserOrders();
+        setTimeout(() => navigate("/order-success"), 1500);
+      } else {
+        toast.warn("Order failed");
+      }
+    }
   };
-  
 
   const handleSaveAddress = () => {
     setSavedAddress(address);
@@ -66,7 +71,10 @@ const OrderPage = () => {
         <h3 className="text-lg font-semibold text-gray-700">Your Items</h3>
         {cartItems.length > 0 ? (
           cartItems.map((item, index) => (
-            <div key={index} className="flex justify-between items-center border-b pb-2 mt-2">
+            <div
+              key={index}
+              className="flex justify-between items-center border-b pb-2 mt-2"
+            >
               <div className="flex items-center">
                 <img
                   src={`${server_url}/uploads/${item.productImage}`}
@@ -75,10 +83,14 @@ const OrderPage = () => {
                 />
                 <div>
                   <p className="font-medium text-gray-800">{item.name}</p>
-                  <p className="text-gray-500 text-sm">₹{item.price} x {item.quantity}</p>
+                  <p className="text-gray-500 text-sm">
+                    ₹{item.price} x {item.quantity}
+                  </p>
                 </div>
               </div>
-              <p className="font-semibold text-green-600">₹{item.price * item.quantity}</p>
+              <p className="font-semibold text-green-600">
+                ₹{item.price * item.quantity}
+              </p>
             </div>
           ))
         ) : (
@@ -88,7 +100,9 @@ const OrderPage = () => {
 
       {/* Address Section */}
       <div className="border rounded-lg p-4 shadow-sm bg-white">
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">Delivery Address</h3>
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">
+          Delivery Address
+        </h3>
         <input
           type="text"
           value={address}
@@ -106,10 +120,15 @@ const OrderPage = () => {
 
       {/* Payment Method */}
       <div className="border rounded-lg p-4 shadow-sm bg-white">
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">Payment Method</h3>
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">
+          Payment Method
+        </h3>
         <div className="space-y-2">
           {["credit_card", "paypal", "gpay", "cod"].map((method) => (
-            <label key={method} className="flex items-center gap-2 text-gray-600">
+            <label
+              key={method}
+              className="flex items-center gap-2 text-gray-600"
+            >
               <input
                 type="radio"
                 value={method}
@@ -135,7 +154,11 @@ const OrderPage = () => {
         </div>
         <div className="flex justify-between text-gray-600">
           <span>Shipping Fee:</span>
-          <span className={`font-medium ${shippingFee === 0 ? "text-green-500" : "text-red-500"}`}>
+          <span
+            className={`font-medium ${
+              shippingFee === 0 ? "text-green-500" : "text-red-500"
+            }`}
+          >
             {shippingFee === 0 ? "Free" : `₹${shippingFee.toFixed(2)}`}
           </span>
         </div>
@@ -143,7 +166,9 @@ const OrderPage = () => {
           <span>Total:</span>
           <span className="text-green-600">₹{orderTotal.toFixed(2)}</span>
         </div>
-        <p className="text-sm text-gray-500 mt-1">Estimated delivery: 3-5 business days</p>
+        <p className="text-sm text-gray-500 mt-1">
+          Estimated delivery: 3-5 business days
+        </p>
         <button
           className="w-full bg-green-500 hover:bg-green-700 text-white py-2 rounded mt-2 transition"
           onClick={handleOrder}

@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { addNewBrand, deleteBrand, viewBrands, updateBrand } from "../services/allAPIS";
 import { toast } from "react-toastify";
 import { server_url } from "../services/server_url";
+import { BrandContext } from "../Context/BrandContext";
 
 function AdminViewBrands() {
-  const [brands, setBrands] = useState([]);
   const [formData, setFormData] = useState({
     brandName: "",
     about: "",
@@ -13,7 +13,7 @@ function AdminViewBrands() {
   const [imagePreview, setImagePreview] = useState(null);
   const [editingBrand, setEditingBrand] = useState(null); // Track brand being edited
   const fileInputRef = useRef(null);
-
+const {brands,fetchBrands}=useContext(BrandContext)
   const token = sessionStorage.getItem("token");
   if (!token) {
     toast.error("Unauthorized: Please log in.");
@@ -22,17 +22,7 @@ function AdminViewBrands() {
 
   const reqHeader = { authorization: `Bearer ${token}` };
 
-  // Fetch all brands
-  const fetchBrands = async () => {
-    try {
-      const response = await viewBrands(reqHeader);
-      if (response.status === 200) {
-        setBrands(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching brands:", error);
-    }
-  };
+
 
   useEffect(() => {
     fetchBrands();

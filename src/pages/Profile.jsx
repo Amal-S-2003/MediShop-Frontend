@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FiEdit, FiShoppingBag, FiLogOut } from "react-icons/fi"; // Import icons
 
 function Profile() {
-  const { loggedUser, setLoggedUser,fetchUserDeatails } = useContext(UserContext);
+  const { loggedUser, setLoggedUser,fetchUserDeatails,setUserLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editUser, setEditUser] = useState({
@@ -57,6 +57,7 @@ function Profile() {
 
   const logout=()=>{
     sessionStorage.clear();
+    setUserLoggedIn(false)
     navigate('/')
   }
   return (

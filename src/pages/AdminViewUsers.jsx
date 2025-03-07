@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { getAllUsers } from "../services/allAPIS";
+import React, { useContext } from "react";
+import { UserContext } from "../Context/UserContext";
 
 function AdminViewUsers() {
-  const [allUsers, setAllUsers] = useState([]);
 
-  const fetchUsers = async () => {
-    try {
-      const result = await getAllUsers();
-      if (result.status === 200) {
-        setAllUsers(result.data);
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const {allUsers}=useContext(UserContext)
 
   return (
     <div className="p-6">

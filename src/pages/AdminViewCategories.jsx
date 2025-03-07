@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { addNewCategory, deleteCategory, viewCategories, updateCategory } from "../services/allAPIS";
 import { toast } from "react-toastify";
 import { server_url } from "../services/server_url";
+import { CategoryContext } from "../Context/CategoryContext";
 
 function AdminViewCategories() {
-  const [categories, setCategories] = useState([]);
+  const {categories, fetchCategories} = useContext(CategoryContext)
   const [formData, setFormData] = useState({
     categoryName: "",
     description: "",
@@ -22,20 +23,6 @@ function AdminViewCategories() {
 
   const reqHeader = { authorization: `Bearer ${token}` };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await viewCategories(reqHeader);
-      if (response.status === 200) {
-        setCategories(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

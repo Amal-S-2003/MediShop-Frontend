@@ -7,7 +7,7 @@ const OrderProgressBar = ({ status }) => {
         { label: "Processing", icon: <FaCog /> },    // Processing status
         { label: "Shipped", icon: <FaShippingFast /> },  // Shipped status
         { label: "Delivered", icon: <FaCheckCircle /> }, // Delivered status
-        { label: "Cancelled", icon: <FaTimesCircle /> }, // Cancelled status
+        // { label: "Cancelled", icon: <FaTimesCircle /> }, // Cancelled status
       ];
   const currentStep = steps.findIndex((step) => step.label === status);
 

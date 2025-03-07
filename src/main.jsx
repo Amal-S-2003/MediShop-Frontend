@@ -7,6 +7,8 @@ import { ProductContextProdvider } from "./Context/ProductContext.jsx";
 import { UserContextProvider } from "./Context/UserContext.jsx";
 import { CartContextProvider } from "./Context/CartContext.jsx";
 import { OrderContextProvider } from "./Context/OrderContext.jsx";
+import { CategoryContextProvider } from "./Context/CategoryContext.jsx";
+import { BrandContextProvider } from "./Context/BrandContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
@@ -14,7 +16,11 @@ createRoot(document.getElementById("root")).render(
         <UserContextProvider>
           <CartContextProvider>
             <OrderContextProvider>
-              <App />
+              <CategoryContextProvider>
+                <BrandContextProvider>
+                <App />
+                </BrandContextProvider>
+              </CategoryContextProvider>
             </OrderContextProvider>
           </CartContextProvider>
         </UserContextProvider>
