@@ -160,3 +160,17 @@ export const getAverageRating = async (productId, reqHeader) => {
 export const addReview = async (reviewData, reqHeader) => {
   return await commonAPI("POST", `${server_url}/add-review`, reviewData, reqHeader);
 };
+
+
+
+export const addToFavourites = async (productId, reqHeader) => {
+  return await commonAPI("POST", `${server_url}/add-to-favourite`, { productId }, reqHeader);
+};
+
+export const getUserFavourites = async (reqHeader) => {  
+  return await commonAPI("GET", `${server_url}/get-user-favourites`, "", reqHeader);
+};
+
+export const removeFromFavourites = async (productId, reqHeader) => {
+  return await commonAPI("DELETE", `${server_url}/remove-from-favourites/${productId}`, "", reqHeader);
+};

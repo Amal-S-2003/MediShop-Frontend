@@ -4,20 +4,22 @@ import {
   ShoppingCartIcon,
   Bars3Icon,
   XMarkIcon,
+  HeartIcon,
 } from "@heroicons/react/24/outline";
 import { NavLink, Link } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
 import { server_url } from "../services/server_url";
 import { CartContext } from "../Context/CartContext";
-import { getSearchResults } from "../services/allAPIS";
+import { getUserFavourites, getSearchResults } from "../services/allAPIS";
 import ContactButton from "./ContactButton";
+import { FavouriteContext } from "../Context/FavouriteContext";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const { userLoggedIn } = useContext(UserContext);
   const { cartItems } = useContext(CartContext);
-
+  const { favCount, setFavCount } = useContext(FavouriteContext);
   useEffect(() => {
     setCartCount(cartItems.length);
   }, [cartItems]);
@@ -33,7 +35,6 @@ function Navbar() {
       const delayDebounce = setTimeout(async () => {
         const result = await getSearchResults(query);
         setSuggestions(result?.data || []);
-
         setLoading(false);
       }, 300);
       return () => clearTimeout(delayDebounce);
@@ -126,7 +127,21 @@ function Navbar() {
               >
                 About
               </NavLink>
-<ContactButton/>
+              <ContactButton />
+
+              {/* Favourites with Badge */}
+              <NavLink
+                to="/view-favourites"
+                className="relative text-gray-600 hover:text-gray-900 transition font-medium"
+              >
+                <HeartIcon className="w-6 h-6" />
+                {favCount > 0 && (
+                  <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    {favCount}
+                  </span>
+                )}
+              </NavLink>
+
               {/* Cart with Badge */}
               <NavLink
                 to="/cart"
@@ -172,57 +187,6 @@ function Navbar() {
             </div>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden bg-white shadow-md">
-            <div className="flex flex-col items-center space-y-3 py-4">
-              <NavLink
-                to="/"
-                className="text-gray-700 hover:text-gray-900 transition font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/about"
-                className="text-gray-700 hover:text-gray-900 transition font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                About
-              </NavLink>
-              <NavLink
-                to="/cart"
-                className="relative text-gray-700 hover:text-gray-900 transition font-medium"
-                onClick={() => setIsOpen(false)}
-              >
-                Cart
-                {cartCount > 0 && (
-                  <span className="ml-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </NavLink>
-              {userLoggedIn ? (
-                <NavLink
-                  to="/profile"
-                  className="text-gray-700 hover:text-gray-900 transition font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Profile
-                </NavLink>
-              ) : (
-                <NavLink
-                  to="/login"
-                  className="text-gray-700 hover:text-gray-900 transition font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Login
-                </NavLink>
-              )}
-            </div>
-          </div>
-        )}
       </nav>
 
       <div className="h-10"></div>

@@ -24,6 +24,9 @@ import AdminLogin from "./pages/AdminLogin";
 import OrderPage from "./pages/OrderPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import ViewOrdersPage from "./pages/ViewOrdersPage";
+import BlogPage from "./pages/BlogPage";
+import AdminBlog from "./pages/AdminBlog";
+import ViewFavourites from "./pages/ViewFavourites";
 
 function App() {
   const { isAdminLogged } = useContext(UserContext);
@@ -50,6 +53,8 @@ function App() {
         <Route path="/brands/:b" element={<BrandProducts />} />
         <Route path="/product-details/:id" element={<ProductDetailsPage />} />
         <Route path="/order-success" element={<OrderSuccessPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/view-favourites" element={<ViewFavourites />} />
 
         <Route
           path="/admin"
@@ -62,6 +67,7 @@ function App() {
           <Route path="view-categories" element={<AdminViewCategories />} />
           <Route path="view-users" element={<AdminViewUsers />} />
           <Route path="view-orders" element={<AdminViewOrders />} />
+          <Route path="add-blog" element={<AdminBlog />} />
         </Route>
       </Routes>
     </>

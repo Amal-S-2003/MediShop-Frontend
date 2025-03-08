@@ -1,18 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { addToCart, getProductDetails } from "../services/allAPIS";
+import {
+  addToCart,
+  addToFavourites,
+  getProductDetails,
+} from "../services/allAPIS";
 import { server_url } from "../services/server_url";
 import { toast, ToastContainer } from "react-toastify";
 import { CartContext } from "../Context/CartContext";
 import ProductReviews from "../components/ProductReviews";
 import { UserContext } from "../Context/UserContext";
+import { FavouriteContext } from "../Context/FavouriteContext";
 
 const ProductDetailsPage = () => {
   const [product, setProduct] = useState();
   const { id } = useParams();
   const userId = sessionStorage.getItem("existing_User_Id");
-const {loggedUser}=useContext(UserContext)
-const{fetchCartItems}=useContext(CartContext)
+  const { loggedUser } = useContext(UserContext);
+  const { fetchCartItems } = useContext(CartContext);
+  const { fetchFavourites } = useContext(FavouriteContext);
+
   const fetchProductDetails = async () => {
     try {
       const productDetails = await getProductDetails(id);
@@ -24,27 +31,48 @@ const{fetchCartItems}=useContext(CartContext)
   };
 
   const cartFunction = async () => {
-    const id=product._id
+    const id = product._id;
     const productData = {
       productId: id,
       quantity: 1,
     };
-console.log(productData,"prodcutData in fe");
 
     const token = sessionStorage.getItem("token");
-    if(token){
-    const reqHeader = {
-      authorization: `Bearer ${token}`,
-    };
-    const result = await addToCart(productData,reqHeader);
-    if(result.status==200){
-      toast.success("Product added to cart")
-      fetchCartItems()
-    }else{toast.warn("Product add to cart is failed!")}
-    console.log("result", result.data);
-  }
+    if (token) {
+      const reqHeader = {
+        authorization: `Bearer ${token}`,
+      };
+      const result = await addToCart(productData, reqHeader);
+      if (result.status == 200) {
+        toast.success("Product added to cart");
+        fetchCartItems();
+      } else {
+        toast.warn("Product add to cart is failed!");
+      }
+      console.log("result", result.data);
+    }
   };
 
+  const addFavourite = async () => {
+    console.log("addFavourite");
+
+    const id = product._id;
+
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      const reqHeader = {
+        authorization: `Bearer ${token}`,
+      };
+      const result = await addToFavourites(id, reqHeader);
+      console.log(result);
+      if (result.status == 200) {
+        fetchFavourites();
+        toast.success("Product added to favourites successfully");
+      } else {
+        toast.success(result.response.data.message);
+      }
+    }
+  };
   useEffect(() => {
     fetchProductDetails();
   }, [id]);
@@ -72,7 +100,7 @@ console.log(productData,"prodcutData in fe");
         <div className="w-full md:w-1/2 space-y-4">
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <p className="text-xl font-semibold text-gray-700">
-          ₹{product.price}
+            ₹{product.price}
           </p>
           <p className="text-gray-600">
             <strong>Category:</strong> {product.category}
@@ -113,19 +141,22 @@ console.log(productData,"prodcutData in fe");
           {/* Buttons */}
           <div className="flex gap-4 mt-6">
             <button
-              onClick={()=>cartFunction()}
+              onClick={() => cartFunction()}
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
             >
               Add to Cart
             </button>
-            <button className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+            <button
+              onClick={() => addFavourite()}
+              className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+            >
               Add to Favorites
             </button>
           </div>
         </div>
       </div>
-      <ProductReviews productId={product._id} user={ loggedUser}/>
-      <ToastContainer position="top-center"/>
+      <ProductReviews productId={product._id} user={loggedUser} />
+      <ToastContainer position="top-center" />
     </div>
   );
 };

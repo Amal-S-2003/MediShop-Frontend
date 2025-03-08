@@ -7,15 +7,15 @@ import CancelOrderButton from "../components/cancelOrderButton";
 import { OrderContext } from "../Context/OrderContext";
 
 const ViewOrdersPage = () => {
-  const {userOrders} = useContext(OrderContext);
+  const { userOrders } = useContext(OrderContext);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const navigate = useNavigate();
 
-
-
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-6">
-      <h2 className="text-3xl font-bold text-blue-700">Order History</h2>
+    <div className="max-w-5xl mx-auto p-6 mt-6 space-y-6">
+      <h2 className="text-3xl font-bold text-gray-700 text-center">
+        Order History
+      </h2>
       {userOrders.length > 0 ? (
         userOrders.map((order) => (
           <div
@@ -63,8 +63,9 @@ const ViewOrdersPage = () => {
                   }
                 >
                   <FaEye className="mr-2" />
-                  {expandedOrder === order._id ? "Hide Details" : "View Details"}
-                  
+                  {expandedOrder === order._id
+                    ? "Hide Details"
+                    : "View Details"}
                 </button>
                 {expandedOrder === order._id && (
                   <div className="mt-4 border-t pt-4">
@@ -148,7 +149,9 @@ const ViewOrdersPage = () => {
                   }
                 >
                   <FaEye className="mr-2" />
-                  {expandedOrder === order._id ? "Hide Details" : "View Details"}
+                  {expandedOrder === order._id
+                    ? "Hide Details"
+                    : "View Details"}
                 </button>
 
                 {order.status !== "Delivered" && (
@@ -214,10 +217,12 @@ const ViewOrdersPage = () => {
         <h1 className="text-center text-red-500">No Orders Found</h1>
       )}
       <button
-        className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 rounded transition mt-4"
+        className=" w-full self-center bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 
+             text-white font-semibold py-3 rounded-lg shadow-md transition-all 
+             duration-300 ease-in-out transform hover:scale-105 active:scale-95"
         onClick={() => navigate("/")}
       >
-        Back to Home
+        ⬅ Back to Home
       </button>
     </div>
   );
