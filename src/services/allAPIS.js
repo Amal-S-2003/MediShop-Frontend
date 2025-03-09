@@ -174,3 +174,25 @@ export const getUserFavourites = async (reqHeader) => {
 export const removeFromFavourites = async (productId, reqHeader) => {
   return await commonAPI("DELETE", `${server_url}/remove-from-favourites/${productId}`, "", reqHeader);
 };
+
+
+
+// ✅ Add a new blog
+export const addBlog = async (blogData, reqHeader) => {
+  return await commonAPI("POST", `${server_url}/add-blog`, blogData, reqHeader);
+};
+
+// ✅ Fetch all blogs
+export const getAllBlogs = async (reqHeader) => {
+  return await commonAPI("GET", `${server_url}/get-all-blogs`,"",reqHeader);
+};
+
+// ✅ Fetch a single blog by ID
+export const getBlogById = async (blogId,reqHeader) => {
+  return await commonAPI("GET", `${server_url}/get-blog/${blogId}`,"",reqHeader);
+};
+
+// ✅ Delete a blog (Admin Only)
+export const deleteBlog = async (blogId, reqHeader) => {
+  return await commonAPI("DELETE", `${server_url}/delete-blog/${blogId}`, "", reqHeader);
+};

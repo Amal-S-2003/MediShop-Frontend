@@ -7,7 +7,7 @@ export const CategoryContextProvider = ( props ) => {
     const [categories,setCategories]=useState([])
     const token = sessionStorage.getItem("token");
     if (!token) {
-      toast.error("Unauthorized: Please log in.");
+      console.log("Unauthorized: Please log in.");
       return;
     }
   

@@ -7,7 +7,7 @@ export const BrandContextProvider = ( props ) => {
     const [brands,setBrands]=useState([])
     const token = sessionStorage.getItem("token");
     if (!token) {
-      toast.error("Unauthorized: Please log in.");
+      console.log("Unauthorized: Please log in.");
       return;
     }
   

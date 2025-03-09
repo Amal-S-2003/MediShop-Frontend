@@ -13,6 +13,7 @@ import { CartContext } from "../Context/CartContext";
 import { getUserFavourites, getSearchResults } from "../services/allAPIS";
 import ContactButton from "./ContactButton";
 import { FavouriteContext } from "../Context/FavouriteContext";
+import BlogButton from "./BlogButton";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -128,7 +129,7 @@ function Navbar() {
                 About
               </NavLink>
               <ContactButton />
-
+              <BlogButton />
               {/* Favourites with Badge */}
               <NavLink
                 to="/view-favourites"

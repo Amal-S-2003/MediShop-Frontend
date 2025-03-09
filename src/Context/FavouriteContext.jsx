@@ -22,7 +22,6 @@ export const FavouriteContextProvider = (props) => {
           setFavouriteItems(response.data);
           setFavCount(response.data.length);
         }
-        fetchFavourites(header);
       } else {
         setLoading(false);
         console.log("Please log in.");

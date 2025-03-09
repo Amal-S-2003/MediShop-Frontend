@@ -19,6 +19,8 @@ function AdminHome() {
     { name: "View Categories", path: "/admin/view-categories", icon: <List size={20} /> },
     { name: "View Users", path: "/admin/view-users", icon: <Users size={20} /> },
     { name: "View Orders", path: "/admin/view-orders", icon: <ShoppingBag size={20} /> },
+    { name: "Add Blog", path: "/admin/add-blog", icon: <ShoppingBag size={20} /> },
+    { name: "View Blog", path: "/admin/view-blogs", icon: <ShoppingBag size={20} /> },
   ];
 
   const handleLogout = () => {
