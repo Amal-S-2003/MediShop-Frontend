@@ -74,13 +74,19 @@ const ProductReviews = ({ productId, user }) => {
       comment,
     };
 
-    try {
-      await addReview(reviewData, reqHeader);
-      toast.success("Review submitted successfully!");
-      setRating(0);
-      setComment("");
-      fetchReviews(reqHeader);
-      fetchAverageRating(reqHeader);
+    try {      
+      const result=await addReview(reviewData, reqHeader);
+      if(result.status==201){
+
+        toast.success("Review submitted successfully!");
+        setRating(0);
+        setComment("");
+        fetchReviews(reqHeader);
+        fetchAverageRating(reqHeader);
+      }else{
+        toast.error("Failed to submit review.");
+ 
+      }
     } catch (error) {
       toast.error("Failed to submit review.");
     }

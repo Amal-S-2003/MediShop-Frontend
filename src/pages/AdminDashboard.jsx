@@ -122,7 +122,7 @@ const AdminDashboard = () => {
       <div className="col-span-2 bg-white shadow-md p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Category Distribution</h3>
         {categoryData.length > 0 ? (
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <PieChart>
               <Tooltip />
               <Legend />

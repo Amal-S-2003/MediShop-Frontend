@@ -7,7 +7,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Company Info */}
         <div>
-          <h3 className="text-lg font-semibold text-green-700">Medizintek</h3>
+          <h3 className="text-lg font-semibold text-green-700">MediShop</h3>
           <p className="mt-2 text-sm">
             Your trusted partner in medical supplies and healthcare solutions.
           </p>
@@ -35,7 +35,7 @@ function Footer() {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-semibold">Contact Us</h3>
-          <p className="mt-2 text-sm">Email: support@medizintek.com</p>
+          <p className="mt-2 text-sm">Email: support@MediShop.com</p>
           <p className="text-sm">Phone: +1 (123) 456-7890</p>
           <p className="text-sm">Location: 123 Healthcare St, MedCity</p>
         </div>
@@ -43,7 +43,7 @@ function Footer() {
       
       {/* Copyright */}
       <div className="text-center text-sm text-gray-500 mt-6 border-t pt-4">
-        &copy; {new Date().getFullYear()} Medizintek. All rights reserved.
+        &copy; {new Date().getFullYear()} MediShop. All rights reserved.
       </div>
     </footer>
   );

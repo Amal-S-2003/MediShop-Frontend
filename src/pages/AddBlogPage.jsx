@@ -45,7 +45,8 @@ const AddBlogPage = () => {
   };
 
   // ✅ Add Video URL
-  const addVideo = () => {
+  const addVideo = (a) => {
+    e.preventDefault();
     if (videoURL.trim()) {
       setBlogData((prev) => ({
         ...prev,
@@ -103,27 +104,24 @@ const AddBlogPage = () => {
       const header = { authorization: `Bearer ${token}` };
 
       try {
-
         console.log("FD", formData.title);
-        
-        const response = await addBlog(formData,header);
-        if (response.status === 201) {
-        
-        toast.success(response.data.message);
-        setBlogData({
-          title: "",
-          caption: "",
-          content: "",
-          category: "",
-          tags: "",
-          thumbnail: null,
-          images: [],
-          videos: [],
-        });
-      }else{
-        toast.error("Failed to add blog.");
 
-      }
+        const response = await addBlog(formData, header);
+        if (response.status === 201) {
+          toast.success(response.data.message);
+          setBlogData({
+            title: "",
+            caption: "",
+            content: "",
+            category: "",
+            tags: "",
+            thumbnail: null,
+            images: [],
+            videos: [],
+          });
+        } else {
+          toast.error("Failed to add blog.");
+        }
       } catch (error) {
         toast.error("Failed to add blog.");
       }
@@ -253,7 +251,7 @@ const AddBlogPage = () => {
               onChange={(e) => setVideoURL(e.target.value)}
             />
             <button
-              onClick={addVideo}
+              onClick={(e) => addVideo(e)}
               className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600"
             >
               <FaPlus />
@@ -288,7 +286,7 @@ const AddBlogPage = () => {
           Submit Blog
         </button>
       </form>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

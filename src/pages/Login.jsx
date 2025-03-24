@@ -68,7 +68,7 @@ const Login = () => {
             }}
           ></div>
           <div className="relative text-center">
-            <h1 className="text-4xl font-bold">Medizintek</h1>
+            <h1 className="text-4xl font-bold">MediShop</h1>
             <p className="mt-2 text-sm">Your Trusted Medical Partner</p>
             <p className="mt-2 text-md font-medium">Login Here</p>
           </div>

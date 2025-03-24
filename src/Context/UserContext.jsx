@@ -9,54 +9,67 @@ export const UserContextProvider = (props) => {
   const [isAdminLogged, setIsAdminLogged] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
 
+  // Fetch all users
   const fetchUsers = async () => {
     try {
       const result = await getAllUsers();
-      if (result.status === 200) {
+      if (result?.status === 200) {
         setAllUsers(result.data);
+      } else {
+        console.log("Failed to fetch users. Response:", result);
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.log("Error fetching users:", error.message);
     }
   };
 
-  // const admin=sessionStorage.getItem("admin")
-  const fetchUserDeatails = async () => {
-    console.log("in function");
+  // Fetch logged-in user details
+  const fetchUserDetails = async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) return; // No token, no need to fetch user
 
-    const token = sessionStorage.getItem("token");
-    if (token) {
       const reqHeader = { authorization: `Bearer ${token}` };
       const response = await getUser(reqHeader);
-      console.log(response, "res in user");
 
-      setLoggedUser(response.data[0]);
+      if (response?.data?.length > 0) {
+        setLoggedUser(response.data[0]);
+        setUserLoggedIn(true);
+      } else {
+        console.log("No user data found in response.");
+      }
+    } catch (error) {
+      console.log("Error fetching user details:", error.message);
     }
   };
+
+  // Run when the component mounts
   useEffect(() => {
-    if (sessionStorage.getItem("admin") == "Admin") {
+    if (sessionStorage.getItem("admin") === "Admin") {
       setIsAdminLogged(true);
     }
     if (sessionStorage.getItem("existing_User_Id")) {
-      fetchUserDeatails();
-      setUserLoggedIn(true);
+      fetchUserDetails();
     }
     fetchUsers();
   }, []);
 
-  const value = {
-    loggedUser,
-    setLoggedUser,
-    userLoggedIn,
-    setUserLoggedIn,
-    isAdminLogged,
-    setIsAdminLogged,
-    allUsers,
-    setAllUsers,
-    fetchUsers,
-    fetchUserDeatails,
-  };
   return (
-    <UserContext.Provider value={value}>{props.children}</UserContext.Provider>
+    <UserContext.Provider
+      value={{
+        loggedUser,
+        setLoggedUser,
+        userLoggedIn,
+        setUserLoggedIn,
+        isAdminLogged,
+        setIsAdminLogged,
+        allUsers,
+        setAllUsers,
+        fetchUsers,
+        fetchUserDetails,
+      }}
+    >
+      {props.children}
+    </UserContext.Provider>
   );
 };

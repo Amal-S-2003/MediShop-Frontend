@@ -31,10 +31,13 @@ function Navbar() {
 
   // Debounced Search API Call
   useEffect(() => {
-    if (query.length > 1) {
+    
+    if (query.length > 0) {
       setLoading(true);
       const delayDebounce = setTimeout(async () => {
         const result = await getSearchResults(query);
+        console.log(result,"result in useeffect");
+        
         setSuggestions(result?.data || []);
         setLoading(false);
       }, 300);
@@ -52,12 +55,12 @@ function Navbar() {
             {/* Logo */}
             <Link to="/" className="flex items-center">
               <img
-                src="/medi.jpg"
-                alt="Medizintek Logo"
+                src="/m-logo.png"
+                alt="MediShop Logo"
                 className="h-12 w-auto"
               />
               <span className="ml-2 text-xl font-semibold text-gray-700">
-                Medizintek
+                MediShop
               </span>
             </Link>
 
@@ -73,7 +76,7 @@ function Navbar() {
               <MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
 
               {/* Search Suggestions */}
-              {query.length > 1 && (
+              {query.length > 0 && (
                 <div className="absolute top-full left-0 w-full bg-white shadow-md rounded-lg mt-2 p-2 z-10">
                   <ul className="max-h-64 overflow-y-auto">
                     {loading ? (

@@ -6,10 +6,7 @@ export const BrandContext = createContext();
 export const BrandContextProvider = ( props ) => {
     const [brands,setBrands]=useState([])
     const token = sessionStorage.getItem("token");
-    if (!token) {
-      console.log("Unauthorized: Please log in.");
-      return;
-    }
+ 
   
     const reqHeader = { authorization: `Bearer ${token}` };
   

@@ -6,10 +6,7 @@ export const CategoryContext = createContext();
 export const CategoryContextProvider = ( props ) => {
     const [categories,setCategories]=useState([])
     const token = sessionStorage.getItem("token");
-    if (!token) {
-      console.log("Unauthorized: Please log in.");
-      return;
-    }
+  
   
     const reqHeader = { authorization: `Bearer ${token}` };
   

@@ -21,7 +21,7 @@ function AboutPage() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-lg max-w-2xl mx-auto"
         >
-          Reliable Medical Surgical Supplies since 2010 – MEDIZINTEK is committed to quality, innovation, and customer satisfaction.
+          Reliable Medical Surgical Supplies since 2010 – MediShop is committed to quality, innovation, and customer satisfaction.
         </motion.p>
       </section>
 
@@ -33,10 +33,10 @@ function AboutPage() {
           transition={{ duration: 0.8 }}
           className="text-3xl font-semibold text-gray-800 mb-6"
         >
-          About MEDIZINTEK
+          About MediShop
         </motion.h2>
         <p className="text-lg text-gray-600 leading-relaxed">
-          Established in 2010, MEDIZINTEK is a leading authorized distributor of surgical disposables and healthcare products. 
+          Established in 2010, MediShop is a leading authorized distributor of surgical disposables and healthcare products. 
           Serving hospitals and dealers across South India, we ensure high-quality products that meet industry standards.
         </p>
 
@@ -54,10 +54,10 @@ function AboutPage() {
           className="mt-10 bg-gradient-to-r from-gray-100 to-gray-200 p-6 rounded-lg shadow-md"
         >
           <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
-            <FaStore className="text-blue-600" /> Medizintek Plus – Expanding Horizons
+            <FaStore className="text-blue-600" /> MediShop Plus – Expanding Horizons
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed mt-2">
-            Introducing <span className="font-semibold">Medizintek Plus</span>, a Retail Hyper Mart for Surgical & Medicine, 
+            Introducing <span className="font-semibold">MediShop Plus</span>, a Retail Hyper Mart for Surgical & Medicine, 
             with plans to expand into a <span className="font-semibold">Retail Pharmacy & Clinic</span> offering specialized doctor consultations.
           </p>
           <p className="text-lg text-gray-600 leading-relaxed mt-2">
@@ -65,9 +65,9 @@ function AboutPage() {
           </p>
         </motion.div>
 
-        {/* Medizintek Promise */}
+        {/* MediShop Promise */}
         <div className="mt-10">
-          <h2 className="text-3xl font-semibold text-gray-800">The Medizintek Promise</h2>
+          <h2 className="text-3xl font-semibold text-gray-800">The MediShop Promise</h2>
           <div className="grid md:grid-cols-2 gap-6 mt-6">
             {[
               { icon: FaShieldAlt, title: "Quality First", desc: "We prioritize excellence, ensuring every product meets the highest standards." },

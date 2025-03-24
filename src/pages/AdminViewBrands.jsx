@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { addNewBrand, deleteBrand, viewBrands, updateBrand } from "../services/allAPIS";
+import {
+  addNewBrand,
+  deleteBrand,
+  viewBrands,
+  updateBrand,
+} from "../services/allAPIS";
 import { toast } from "react-toastify";
 import { server_url } from "../services/server_url";
 import { BrandContext } from "../Context/BrandContext";
@@ -13,7 +18,7 @@ function AdminViewBrands() {
   const [imagePreview, setImagePreview] = useState(null);
   const [editingBrand, setEditingBrand] = useState(null); // Track brand being edited
   const fileInputRef = useRef(null);
-const {brands,fetchBrands}=useContext(BrandContext)
+  const { brands, fetchBrands } = useContext(BrandContext);
   const token = sessionStorage.getItem("token");
   if (!token) {
     toast.error("Unauthorized: Please log in.");
@@ -21,8 +26,6 @@ const {brands,fetchBrands}=useContext(BrandContext)
   }
 
   const reqHeader = { authorization: `Bearer ${token}` };
-
-
 
   useEffect(() => {
     fetchBrands();
@@ -113,7 +116,9 @@ const {brands,fetchBrands}=useContext(BrandContext)
 
       {/* Add / Edit Brand Form */}
       <div className="bg-white shadow-md rounded p-4 mb-6">
-        <h3 className="text-xl font-semibold mb-3">{editingBrand ? "Edit Brand" : "Add New Brand"}</h3>
+        <h3 className="text-xl font-semibold mb-3">
+          {editingBrand ? "Edit Brand" : "Add New Brand"}
+        </h3>
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
             type="text"
@@ -141,9 +146,16 @@ const {brands,fetchBrands}=useContext(BrandContext)
           />
           {/* Show Image Preview */}
           {imagePreview && (
-            <img src={imagePreview} alt="Preview" className="mt-2 h-24 w-24 object-cover rounded" />
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="mt-2 h-24 w-24 object-cover rounded"
+            />
           )}
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white p-2 rounded w-full"
+          >
             {editingBrand ? "Update Brand" : "Add Brand"}
           </button>
           {editingBrand && (
@@ -185,9 +197,15 @@ const {brands,fetchBrands}=useContext(BrandContext)
                       className="h-16 w-16 object-cover rounded"
                     />
                   </td>
-                  <td className="py-2 px-4 border text-center">{brand.brandName}</td>
-                  <td className="py-2 px-4 border text-center">{brand.about}</td>
-                  <td className="py-2 px-4 border text-center">{brand.productCount || 0}</td>
+                  <td className="py-2 px-4 border text-center">
+                    {brand.brandName}
+                  </td>
+                  <td className="py-2 px-4 border text-center">
+                    {brand.about}
+                  </td>
+                  <td className="py-2 px-4 border text-center">
+                    {brand.productCount || 0}
+                  </td>
                   <td className="py-2 px-4 border text-center">
                     <button
                       onClick={() => handleEdit(brand)}
@@ -206,7 +224,9 @@ const {brands,fetchBrands}=useContext(BrandContext)
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-4">No brands found</td>
+                <td colSpan="5" className="text-center py-4">
+                  No brands found
+                </td>
               </tr>
             )}
           </tbody>

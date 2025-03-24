@@ -34,6 +34,9 @@ export const OrderContextProvider = (props) => {
       }
       const reqHeader = { authorization: `Bearer ${token}` };
       const response = await getAllOrders(reqHeader);
+      if (response.data.length>0) {
+        
+      }
       const sortedOrders = response.data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );

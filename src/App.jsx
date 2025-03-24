@@ -29,6 +29,8 @@ import ViewFavourites from "./pages/ViewFavourites";
 import AddBlogPage from "./pages/AddBlogPage";
 import BlogListingPage from "./pages/BlogListingPage";
 import ViewBlogs from "./pages/ViewBlogs";
+import ViewAllBrands from "./pages/ViewAllBrands";
+import ViewAllCategories from "./pages/ViewAllCategories";
 
 function App() {
   const { isAdminLogged } = useContext(UserContext);
@@ -58,6 +60,8 @@ function App() {
         <Route path="/view-blog/:id" element={<BlogPage />} />
         <Route path="/view-blog" element={<BlogListingPage />} />
         <Route path="/view-favourites" element={<ViewFavourites />} />
+        <Route path="/view-all-brands" element={<ViewAllBrands />} />
+        <Route path="/view-all-categories" element={<ViewAllCategories />} />
 
         <Route
           path="/admin"
