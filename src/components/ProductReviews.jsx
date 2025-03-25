@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaUserCircle } from "react-icons/fa";
+import { MdRateReview } from "react-icons/md";
 import { toast } from "react-toastify";
 import { addReview, getAverageRating, getProductReviews } from "../services/allAPIS";
 
@@ -26,31 +27,20 @@ const ProductReviews = ({ productId, user }) => {
       setReviews(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching reviews:", error);
-      setReviews([]); // Fallback to an empty array
+      setReviews([]);
     }
   };
 
   const fetchAverageRating = async (header) => {
     try {
       const response = await getAverageRating(productId, header);
-      console.log("Average Rating API Response:", response.data); // Debugging
-  
-      // Extract rating & ensure it's a number
-      const rating = response.data?.averageRating ;
-  
-      if (typeof rating === "number" && !isNaN(rating)) {
-        setAverageRating(parseFloat(rating.toFixed(1))); // Ensure it's a number with 1 decimal
-      } else {
-        console.log("in ELSE");
-        
-        setAverageRating(0); // Fallback if rating is undefined or invalid
-      }
+      const rating = response.data?.averageRating;
+      setAverageRating(typeof rating === "number" && !isNaN(rating) ? parseFloat(rating.toFixed(1)) : 0);
     } catch (error) {
       console.error("Error fetching average rating:", error);
-      setAverageRating(0); // Ensure fallback value
+      setAverageRating(0);
     }
   };
-  
 
   const handleReviewSubmit = async () => {
     if (!user) {
@@ -74,18 +64,16 @@ const ProductReviews = ({ productId, user }) => {
       comment,
     };
 
-    try {      
-      const result=await addReview(reviewData, reqHeader);
-      if(result.status==201){
-
+    try {
+      const result = await addReview(reviewData, reqHeader);
+      if (result.status === 201) {
         toast.success("Review submitted successfully!");
         setRating(0);
         setComment("");
         fetchReviews(reqHeader);
         fetchAverageRating(reqHeader);
-      }else{
+      } else {
         toast.error("Failed to submit review.");
- 
       }
     } catch (error) {
       toast.error("Failed to submit review.");
@@ -93,23 +81,21 @@ const ProductReviews = ({ productId, user }) => {
   };
 
   return (
-    <div className="mt-6">
-      <h2 className="text-xl font-bold">Customer Reviews</h2>
-
-      {/* Average Rating Display */}
-      <div className="flex items-center">
-      <span className="text-2xl font-semibold">
-  {averageRating ? averageRating.toFixed(1) : "0.0"}
-</span>
+    <div className="mt-6 p-4 bg-white shadow-lg rounded-lg max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold flex items-center gap-2">
+        <MdRateReview className="text-black" /> Customer Reviews
+      </h2>
+      
+      <div className="flex items-center mt-2">
+        <span className="text-2xl font-semibold text-black">{averageRating || "0.0"}</span>
         <div className="flex ml-2">
           {[1, 2, 3, 4, 5].map((star) => (
             <FaStar key={star} className={`text-xl ${star <= averageRating ? "text-yellow-500" : "text-gray-300"}`} />
           ))}
         </div>
-        <span className="text-gray-500 ml-2">{reviews.length} reviews</span>
+        <span className="text-gray-500 ml-2">({reviews.length} reviews)</span>
       </div>
 
-      {/* Leave a Review Section */}
       {user ? (
         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
           <h3 className="font-semibold">Leave a Review</h3>
@@ -117,7 +103,7 @@ const ProductReviews = ({ productId, user }) => {
             {[1, 2, 3, 4, 5].map((star) => (
               <FaStar
                 key={star}
-                className={`cursor-pointer text-xl ${rating >= star ? "text-yellow-500" : "text-gray-400"}`}
+                className={`cursor-pointer text-2xl ${rating >= star ? "text-yellow-500" : "text-gray-400"}`}
                 onClick={() => setRating(star)}
               />
             ))}
@@ -131,7 +117,7 @@ const ProductReviews = ({ productId, user }) => {
           />
           <button
             onClick={handleReviewSubmit}
-            className="bg-blue-600 text-white px-4 py-2 rounded mt-2 hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded mt-2 hover:bg-blue-700 transition w-full"
           >
             Submit Review
           </button>
@@ -140,26 +126,28 @@ const ProductReviews = ({ productId, user }) => {
         <p className="text-gray-600 mt-2">Login to leave a review.</p>
       )}
 
-      {/* Display Existing Reviews */}
       <div className="mt-4">
-        {Array.isArray(reviews) && reviews.length > 0 ? (
+        {reviews.length > 0 ? (
           reviews.map((review) => (
-            <div key={review._id} className="p-4 border-b">
-              <div className="flex items-center">
-                <h3 className="font-semibold">{review.username}</h3>
-                <div className="flex ml-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <FaStar
-                      key={star}
-                      className={`text-lg ${review.rating >= star ? "text-yellow-500" : "text-gray-400"}`}
-                    />
-                  ))}
+            <div key={review._id} className="p-4 border-b flex items-start gap-3">
+              <FaUserCircle className="text-3xl text-gray-400" />
+              <div>
+                <div className="flex items-center">
+                  <h3 className="font-semibold">{review.username}</h3>
+                  <div className="flex ml-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <FaStar
+                        key={star}
+                        className={`text-lg ${review.rating >= star ? "text-yellow-500" : "text-gray-400"}`}
+                      />
+                    ))}
+                  </div>
                 </div>
+                <p className="text-gray-600 mt-1">{review.comment}</p>
+                <span className="text-sm text-gray-400">
+                  {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : "Unknown date"}
+                </span>
               </div>
-              <p className="text-gray-600">{review.comment}</p>
-              <span className="text-sm text-gray-400">
-                {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : "Unknown date"}
-              </span>
             </div>
           ))
         ) : (

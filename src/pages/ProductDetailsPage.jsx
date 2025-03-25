@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  addToCart,
-  addToFavourites,
-  getProductDetails,
-} from "../services/allAPIS";
+import { addToCart, addToFavourites, getProductDetails } from "../services/allAPIS";
 import { server_url } from "../services/server_url";
 import { toast, ToastContainer } from "react-toastify";
 import { CartContext } from "../Context/CartContext";
 import ProductReviews from "../components/ProductReviews";
 import { UserContext } from "../Context/UserContext";
 import { FavouriteContext } from "../Context/FavouriteContext";
+import { ShoppingCartIcon, HeartIcon, TagIcon, CubeIcon } from "@heroicons/react/24/solid";
+import { motion } from "framer-motion";
 
 const ProductDetailsPage = () => {
   const [product, setProduct] = useState();
@@ -49,22 +47,17 @@ const ProductDetailsPage = () => {
       } else {
         toast.warn("Product add to cart is failed!");
       }
-      console.log("result", result.data);
     }
   };
 
   const addFavourite = async () => {
-    console.log("addFavourite");
-
     const id = product._id;
-
     const token = sessionStorage.getItem("token");
     if (token) {
       const reqHeader = {
         authorization: `Bearer ${token}`,
       };
       const result = await addToFavourites(id, reqHeader);
-      console.log(result);
       if (result.status == 200) {
         fetchFavourites();
         toast.success("Product added to favourites successfully");
@@ -79,33 +72,29 @@ const ProductDetailsPage = () => {
 
   if (!product) {
     return (
-      <p className="text-center text-gray-600">Loading product details...</p>
+      <p className="text-center text-gray-600 animate-pulse">Loading product details...</p>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto my-10 p-6 ">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="max-w-5xl mx-auto my-10 p-6">
       {/* Product Container */}
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
         {/* Product Image */}
-        <div className="w-full md:w-1/2 flex justify-center">
-          <img
-            src={`${server_url}/uploads/${product.productImage}`}
-            alt={product.name}
-            className="w-80 h-80 object-contain border-r-2 border-gray-600 pr-20"
-          />
-        </div>
+        <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.6 }} className="w-full md:w-1/2 flex justify-center">
+          <img src={`${server_url}/uploads/${product.productImage}`} alt={product.name} className="w-80 h-80 object-contain  border-gray-600 pr-20" />
+        </motion.div>
 
         {/* Product Details */}
-        <div className="w-full md:w-1/2 space-y-4">
-          <h2 className="text-3xl font-bold">{product.name}</h2>
-          <p className="text-xl font-semibold text-gray-700">
-            ₹{product.price}
+        <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.6 }} className="w-full md:w-1/2 space-y-4">
+          <h2 className="text-3xl font-bold flex items-center gap-2">
+            <TagIcon className="w-6 h-6 text-gray-700" /> {product.name}
+          </h2>
+          <p className="text-xl font-semibold text-gray-700">₹{product.price}</p>
+          <p className="text-gray-600 flex items-center gap-2">
+            <CubeIcon className="w-5 h-5 text-gray-500" /> <strong>Category:</strong> {product.category}
           </p>
-          <p className="text-gray-600">
-            <strong>Category:</strong> {product.category}
-          </p>
-          <p className="text-gray-600">
+          <p className="text-gray-600 flex items-center gap-2">
             <strong>Brand:</strong> {product.brand}
           </p>
           <p className="text-gray-600">
@@ -124,40 +113,20 @@ const ProductDetailsPage = () => {
             </div>
           )}
 
-          {/* Specifications */}
-          {product?.specifications?.length > 0 && (
-            <div>
-              <strong>Specifications:</strong>
-              <ul className="list-disc ml-5 text-gray-600">
-                {product.specifications.map((spec, index) => (
-                  <li key={index}>
-                    <strong>{spec.key}:</strong> {spec.value}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
           {/* Buttons */}
           <div className="flex gap-4 mt-6">
-            <button
-              onClick={() => cartFunction()}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-            >
-              Add to Cart
-            </button>
-            <button
-              onClick={() => addFavourite()}
-              className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-            >
-              Add to Favorites
-            </button>
+            <motion.button whileTap={{ scale: 0.9 }} onClick={cartFunction} className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+              <ShoppingCartIcon className="w-5 h-5" /> Add to Cart
+            </motion.button>
+            <motion.button whileTap={{ scale: 0.9 }} onClick={addFavourite} className="flex items-center gap-2 px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+              <HeartIcon className="w-5 h-5" /> Add to Favorites
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       </div>
       <ProductReviews productId={product._id} user={loggedUser} />
       <ToastContainer position="top-center" />
-    </div>
+    </motion.div>
   );
 };
 

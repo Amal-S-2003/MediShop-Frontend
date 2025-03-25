@@ -31,73 +31,52 @@ const AdminDashboard = () => {
   const [userGrowth, setUserGrowth] = useState([]);
   const [orderTrends, setOrderTrends] = useState([]);
 
-  // Generate a random hex color
   const getRandomColor = () => {
     return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   };
 
   useEffect(() => {
-    // Process category data
     if (categories?.length) {
-      const formattedCategories = categories.map((category) => ({
+      setCategoryData(categories.map(category => ({
         name: category.categoryName,
         value: category.productCount,
-      }));
-      setCategoryData(formattedCategories);
+      })));
     }
 
-    // Process brand data
     if (brands?.length) {
-      const formattedBrands = brands.map((brand) => ({
+      setBrandData(brands.map(brand => ({
         name: brand.brandName,
         value: brand.productCount,
-      }));
-      setBrandData(formattedBrands);
+      })));
     }
 
-    // Calculate user growth
     if (allUsers?.length) {
-      const months = ["January", "February", "March", "April", "May", "June"];
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
       const userDistribution = Array(6).fill(0);
 
       allUsers.forEach((_, index) => {
         userDistribution[index % 6]++;
       });
 
-      const userGrowthData = months.map((month, index) => ({
+      setUserGrowth(months.map((month, index) => ({
         month,
         count: userDistribution[index],
-      }));
-
-      setUserGrowth(userGrowthData);
+      })));
     }
 
-    // Process order trends
     if (orders?.length) {
       const monthCounts = {};
-  
-      orders.forEach((order) => {
-        const dateString = order.createdAt?.$date || order.createdAt;
-        const date = new Date(dateString);
-  
+      orders.forEach(order => {
+        const date = new Date(order.createdAt);
         if (!isNaN(date)) {
           const monthYear = date.toLocaleString("default", { month: "short", year: "numeric" });
           monthCounts[monthYear] = (monthCounts[monthYear] || 0) + 1;
         }
       });
-  
-      // Convert object to array & sort it by date
-      const orderTrendData = Object.keys(monthCounts)
-        .map((month) => ({
-          month,
-          count: monthCounts[month],
-          date: new Date(month), // Convert back to Date for sorting
-        }))
-        .sort((a, b) => a.date - b.date) // Sort in ascending order
-  
-        .map(({ month, count }) => ({ month, count })); // Remove the date key after sorting
-  
-      setOrderTrends(orderTrendData);
+      
+      setOrderTrends(Object.keys(monthCounts)
+        .map(month => ({ month, count: monthCounts[month] }))
+        .sort((a, b) => new Date(a.month) - new Date(b.month)));
     }
   }, [categories, brands, allUsers, orders]);
 
@@ -109,8 +88,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="p-6 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-      {/* Stats Cards */}
+    <div className="p-6 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       {Object.entries(totals).map(([key, value]) => (
         <div key={key} className="bg-white shadow-md p-6 rounded-lg text-center">
           <h3 className="text-lg font-semibold capitalize">{key}</h3>
@@ -118,8 +96,7 @@ const AdminDashboard = () => {
         </div>
       ))}
 
-      {/* Category Distribution */}
-      <div className="col-span-2 bg-white shadow-md p-6 rounded-lg">
+      <div className="col-span-1 sm:col-span-2 bg-white shadow-md p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Category Distribution</h3>
         {categoryData.length > 0 ? (
           <ResponsiveContainer width="100%" height={400}>
@@ -138,8 +115,7 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* Brand Statistics */}
-      <div className="col-span-2 bg-white shadow-md p-6 rounded-lg">
+      <div className="col-span-1 sm:col-span-2 bg-white shadow-md p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Brand Statistics</h3>
         {brandData.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
@@ -156,8 +132,7 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* User Growth */}
-      <div className="col-span-2 bg-white shadow-md p-6 rounded-lg">
+      <div className="col-span-1 sm:col-span-2 bg-white shadow-md p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">User Growth</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={userGrowth}>
@@ -170,8 +145,7 @@ const AdminDashboard = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* Order Trends */}
-      <div className="col-span-2 bg-white shadow-md p-6 rounded-lg">
+      <div className="col-span-1 sm:col-span-2 bg-white shadow-md p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Order Trends</h3>
         {orderTrends.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
